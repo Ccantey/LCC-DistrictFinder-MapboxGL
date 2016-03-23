@@ -1,9 +1,9 @@
 ## Minnesota Legislative Coordinating Commission
 ### Legislative district mapping application User Interface
 
-The **Who Represents Me?** application is a completely open-source full-stack, responsive (RWD) application, built with PostGIS, Leaflet, and a little TLC.
+The **LCC Precinct Finder** application is a completely open-source full-stack, responsive (RWD) application, built with PostGIS, Leaflet. It extends the **LCC Who Represents Me?** page to include voter tabulation districts (voting precincts) and hopefully a little WebGL from Mapbox.
 
-See it in the wild at [http://gis.leg.mn](http://www.gis.leg.mn/OpenLayers/districts/)
+See it in the wild at [http://gis.leg.mn](http://www.gis.leg.mn/OpenLayers/precincts/)
 
 ### What's included?
 - Code
