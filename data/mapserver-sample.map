@@ -1,0 +1,233 @@
+MAP
+  NAME 'DISTRICT FINDER'
+  STATUS ON
+        UNITS METERS
+  FONTSET   "/web/gis/mapserver/fonts/fontset.list"
+  SYMBOLSET "/web/gis/mapserver/symbols/symbol.sym"
+  TRANSPARENT ON
+        PROJECTION
+        "proj=utm"
+        "ellps=GRS80"
+        "datum=NAD83"
+        "zone=15"
+        "units=m"
+        "north"
+        "no_defs"
+END
+    
+  OUTPUTFORMAT
+    NAME 'agg/png'
+    DRIVER AGG/PNG
+    IMAGEMODE RGBA
+    FORMATOPTION "TRANSPARENT=TRUE"
+  END 
+
+  IMAGETYPE AGG/PNG
+
+  WEB
+    metadata
+       "ows_enable_request" "*" 
+             "wms_title" "Who Represents Me" 
+             "wms_onlineresource" "http://www.gis.leg.mn/cgi-bin/mapserv?map=/web/gis/OpenLayers/elect/mapserver1.map" 
+      wms_srs "EPSG:4326 EPSG:900913"
+    end
+  END
+
+
+  ## HOUSE LAYER
+  LAYER
+    CONNECTIONTYPE postgis
+    NAME 'hse2012_1'
+    CONNECTION "user=#### dbname=#### host=####"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "the_geom from hse2012_1"
+
+    STATUS ON
+    DEBUG ON
+    TYPE POLYGON
+    MAXSCALEDENOM 10000000
+    PROCESSING "LABEL_NO_CLIP=True"
+    #LABELMAXSCALEDENOM 8000000
+    #LABELITEM 'district'
+
+    CLASS
+      NAME 'House District Boundaries'
+      STYLE
+        OUTLINECOLOR 255 133 51
+        WIDTH 1
+      END   
+      #TEXT ('H.R.+' + '[district]')   
+      LABEL
+        TYPE TRUETYPE
+        SIZE 9
+        FONT "arial"
+        COLOR 255 133 51
+        OUTLINECOLOR 255 255 255
+        OUTLINEWIDTH 1
+        MAXSCALEDENOM 1500000
+        #MAXSCALEDENOM 1000
+        POSITION AUTO
+        WRAP '+'
+        ALIGN center
+        BUFFER 2
+        PARTIALS FALSE              
+      END
+    END
+  END
+
+
+ ## Senate LAYER 
+ LAYER
+    CONNECTIONTYPE postgis
+    NAME 'sen2012'
+    CONNECTION "user=#### dbname=#### host=####"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "the_geom from sen2012"
+
+    STATUS ON
+    DEBUG ON
+    TYPE POLYGON
+    MAXSCALEDENOM 10000000
+    PROCESSING "LABEL_NO_CLIP=True"
+    #LABELMAXSCALEDENOM 8000000
+    #LABELITEM 'district'
+    
+    CLASS
+      NAME 'Senate District Boundaries'
+      STYLE
+        OUTLINECOLOR 255 102 0
+        WIDTH 3
+      END   
+      #TEXT ('Sen.+' + '[district]')   
+      LABEL
+        TYPE TRUETYPE
+        SIZE 10
+        FONT "arial-bold"
+        COLOR 255 102 0
+        OUTLINECOLOR 255 255 255
+        OUTLINEWIDTH 3
+        MAXSCALEDENOM 3000000
+        #MAXSCALEDENOM 1000
+        POSITION AUTO
+        WRAP '+'
+        ALIGN center
+        BUFFER 2
+        PARTIALS FALSE              
+      END
+    END
+  END
+
+  
+  ## Congressional LAYER
+  LAYER
+    CONNECTIONTYPE postgis
+    NAME 'cng2012'
+    CONNECTION "user=#### dbname=#### host=####"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "the_geom from cng2012"
+
+    STATUS ON
+    DEBUG ON
+    TYPE POLYGON
+    MAXSCALEDENOM 10000000
+    PROCESSING "LABEL_NO_CLIP=True"
+    #LABELMAXSCALEDENOM 8000000
+    #LABELITEM 'district'
+    
+    CLASS
+      NAME 'Congressional District Boundaries'
+      STYLE
+        OUTLINECOLOR 255 51 153
+        WIDTH 3
+      END   
+      #TEXT ('Cong.+' + '[district]')   
+      LABEL
+        TYPE TRUETYPE
+        SIZE 10
+        FONT "arial-bold"
+        COLOR 255 51 153
+        OUTLINECOLOR 255 255 255
+        OUTLINEWIDTH 3
+        MAXSCALEDENOM 10000000
+        #MAXSCALEDENOM 1000
+        POSITION AUTO
+        WRAP '+'
+        ALIGN center
+        BUFFER 2
+        PARTIALS FALSE              
+      END
+    END
+  END
+   
+
+
+## MCD LAYER
+LAYER
+    CONNECTIONTYPE postgis
+    NAME 'mcd2010'
+    CONNECTION "user=#### dbname=#### host=####"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "the_geom from mcd2010"
+
+    STATUS on
+    DEBUG ON
+    TYPE POLYGON
+    MAXSCALEDENOM 10000000
+    #LABELITEM 'NAME'
+    #LABELMAXSCALE 800000
+    CLASS
+      NAME 'City and Town Boundaries'
+      STYLE
+        OUTLINECOLOR 35 31 32
+        WIDTH 1
+      END      
+    END
+  END
+  
+
+  ## County LAYER
+  LAYER
+    CONNECTIONTYPE postgis
+    NAME 'cty2010'
+    CONNECTION "user=#### dbname=#### host=####"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "the_geom from cty2010"
+
+   STATUS ON
+    DEBUG ON
+    TYPE POLYGON
+    MAXSCALEDENOM 10000000
+    PROCESSING "LABEL_NO_CLIP=True"
+    #LABELMAXSCALEDENOM 8000000
+    LABELITEM 'name'
+    
+    CLASS
+      NAME 'County Boundaries'
+      STYLE
+        OUTLINECOLOR 35 31 32
+        WIDTH 2.5
+      END   
+      #TEXT ([name])   
+      LABEL
+        TYPE TRUETYPE
+        SIZE 10
+        FONT "arial-bold"
+        COLOR 35 31 32
+        OUTLINECOLOR 255 255 255
+        OUTLINEWIDTH 1
+        MAXSCALEDENOM 3000000
+        #MAXSCALEDENOM 1000
+        POSITION AUTO
+        WRAP ' '
+        ALIGN center
+        BUFFER 2
+        PARTIALS FALSE              
+      END
+    END
+  END
+
+
+
+
+END ## end Map
+

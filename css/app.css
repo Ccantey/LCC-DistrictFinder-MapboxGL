@@ -1,0 +1,683 @@
+/*override leg css*/
+.leg_PageContent{
+    max-height: 615px;
+    font-family: arial;
+    color:#3b3b3b;
+    /*margin:0;*/
+}
+.leg_PageContent li a{
+    color:#606060;
+}
+.leg_PageContent li a:hover{
+    background-color: #606060;
+    color:#fff;
+    padding:3px 3px 3px 5px;
+    border-radius:3px;
+} 
+
+.leg_PageContent ul, .leg_PageContent ol {
+    margin-left: 2em;
+}
+.leg_PageContent a:focus{
+    background-color: #eee !important;
+}
+
+/*application css*/
+.contact{
+    color: #5c728b;
+    font-size: 11px;
+    font-style: italic;
+    padding: 5px;
+}
+
+.leaflet-div-icon{
+    background-color: transparent;
+    border:none;
+}
+.leaflet-marker-icon.StateHouseLayer{
+    color:#ff6600;
+}
+.leaflet-marker-icon.StateSenateLayer{
+    color:#ff6600;
+    font-weight: bold;
+    font-size: 1.25em;
+}
+.leaflet-marker-icon.CountyBoundaryLayer{
+    color:#231f20;
+    font-weight:bold;
+    line-height: 1em;
+    margin-left:-20px;
+}
+.leaflet-marker-icon.CongressionalLayer{
+    color: #ff3399;
+    font-weight:bold;
+}
+
+#sidebar{
+    position:relative;
+    height:540px;
+    width:285px;
+}
+.notice {
+    color: #8d8d8d;
+    font-size: 12px;
+    font-style: italic;
+    margin-bottom: 0;
+    margin-top: 90px;
+    position: absolute;
+    text-align: center;
+}
+#mask {
+    position: absolute;
+    height: 84%;
+    top: 0;
+    width: 99.%;
+    z-index: 1001;
+    background-color: #e6e6e6;
+    border-top: 1px solid #a7a5a6;
+    border-right: 1px solid #a7a5a6;
+    border-bottom: 1px solid #a7a5a6;
+    border-left: 3px solid #a7a5a6;
+}
+#mask p{
+    margin-top: 35px;
+    padding:0 10px;
+}
+#mask ol{
+    font-size: 1.1em;
+}
+#mask img{
+    margin-left:31%;
+    margin-top:160px;
+}
+#mask li{
+        padding:7px;
+    }
+
+#map{
+    width:70%;
+    top:-631px;
+    border: 1px solid #a7a5a6;
+    float: right;
+    z-index: 0;
+}
+#loading{
+    position: absolute;
+    left: 62%;
+    top: 54%;
+    z-index: 1005;
+    height:23px;
+}
+.leaflet-container{
+    cursor: crosshair;
+}
+/*#housedistrict, #senatedistrict, #ushousedistrict, #ussenatedistrict, #ussenatedistrict2{
+    clear:both;
+}*/
+
+ul{
+    list-style-type: none;  
+}
+.party{
+    font-weight: normal;
+}
+#geocodeFeedback{
+    font-size: 12px;
+    text-align: center;
+}
+.search{
+    position:relative;
+    height:86px;
+    background-color: #e6e6e6;
+    border-top: 1px solid #a7a5a6;
+    border-right: 1px solid #a7a5a6;
+    border-bottom: 1px solid #a7a5a6;
+    border-left: 3px solid #a7a5a6;
+    width:282px;
+}
+.mnhouse, .mnsenate, .ushouse, .ussenate1, .ussenate2 {
+    height:87px;
+    background-color: #e6e6e6;
+    border-top: 1px solid #a7a5a6;
+    border-right: 1px solid #a7a5a6;
+    border-bottom: 1px solid #a7a5a6;
+    border-left: 3px solid #a7a5a6;
+}
+.mnhouse:hover, .mnsenate:hover, .ushouse:hover, .ussenate1:hover, .ussenate2:hover{
+    background-color: rgba(150,150,150,.41);
+    border-left: 3px solid #991a36;
+    /*border-right: 3px solid #991a36;*/
+    cursor: pointer;
+}
+
+.active{
+    background-color: rgba(153,51,51,.41);
+    border-left: 3px solid #991a36;
+    /*border-right: 3px solid #991a36;*/
+}
+.active:hover{
+    background-color: rgba(153,51,51,.41);
+    border-left: 3px solid #991a36;
+}
+
+.mnhouse, .mnsenate,.ushouse, .ussenate1, .ussenate2{
+    margin-top:3px;
+}
+
+.lcc_gis_member{
+    overflow:hidden;
+    width:200px;
+    white-space: nowrap;
+    /*text-overflow:ellipsis;*/
+    position:relative;
+    font-weight: bold;
+    /*bottom: 80px;*/
+    left:80px;
+    top:5px;
+    text-align: left;
+    z-index: 101;
+}
+
+.lcc_gis_memberdistrict{
+    position: relative;
+    left: 80px;
+    top:10px;
+    text-align: left;
+}
+#officials img {
+    height: 100%;
+    min-height: 87px;
+    max-width: 65%;
+    position: relative;
+    top: -55px;
+    border:none;
+}
+
+.membersublist{
+    margin-top:15px;
+}
+.memberLink{
+    position: relative;
+    right: 1px;
+    top:-9px;
+    /*bottom:80px;*/
+    text-align: right;
+}
+
+.search label{
+    font-weight: bold;
+    font-size: 12px;
+}
+
+#map_title{
+    text-align: center;
+}
+
+#map_reset{
+    position:relative;
+    text-align: right;
+    font-size: 11px;
+    bottom:8px;
+    z-index: 1001;
+}
+
+#map_reset .noref,#map_help .noref, #map_disclaimer .noref{
+     color:#5c728b;
+}
+
+#map_reset .noref:hover,#map_help .noref:hover, #map_disclaimer .noref:hover{
+    cursor:pointer;
+    color:#346f9a;
+}
+
+#map_layers_toggle{
+    color:#e6e6e6;
+}
+
+#map_layers_toggle:hover{
+    cursor:pointer;
+    color:#8d8d8d;
+}
+
+#map_help{
+    font-size: 11px;
+    position: absolute;
+    bottom:0;
+    left:30%;
+    z-index: 101;
+}
+
+#map_search_results_metadata{
+    font-size: 11px;
+    position: relative;
+    bottom:0;
+    width:100%;
+    padding-left: 15%;
+    text-align: center;
+}
+
+#map_disclaimer{
+    font-size: 11px;
+    position: absolute;
+    bottom:0;
+    right:0;
+    z-index: 101;
+}
+
+#triangle-topright{
+    position:absolute;
+    right:0;
+    width:0;
+    height:0;
+    border-top:100px solid #3b3b3b;
+    border-left: 100px solid transparent;
+    z-index: 101;
+}
+
+#triangle-topright{
+    cursor:pointer;
+}
+
+#map_layers{
+    position:absolute;
+    right:-225px;
+    width:225px;
+    height: 527px;
+    background-color: #3b3b3b;
+    color:#c3c3c3;
+
+    z-index: 101;
+}
+
+#map_layers_content_title{
+    position:relative;
+    left:38%;
+    top:68px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#map_layers_content_list{
+    position: relative;
+    /*left:-13px;*/
+    top:85px;
+}
+
+#map_layers_toggle{
+    position: absolute;
+    right:0;
+    top:8px;
+}
+
+#map_layers_basemap_title{
+    position:relative;
+    left:23%;
+    top:105px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#triangle-topright .fa-map{
+    color:#e6e6e6;
+    position: absolute;
+    right:23px;
+    bottom:67px;
+}
+
+.form-group{
+    padding: 10px;
+}
+
+.form-group input{
+    height:23px;
+    border: solid 1px #dcdcdc;
+    border-radius: 4px;
+    color: #3b3b3b;
+    margin-top: 5px;
+    height:27px;
+    transition: box-shadow 0.3s, border 0.3s;
+        /* Firefox */
+        width: -moz-calc(99% - 22px);
+        /* WebKit */
+        width: -webkit-calc(99% - 22px);
+        /* Opera */
+        width: -o-calc(99% - 22px);
+        /* Standard */
+        width: calc(99% - 22px);
+}
+
+.form-group input:focus{
+    border: solid 1px #707070;
+    box-shadow: 0 0 5px 1px #969696;
+    /*border-color: #555;*/
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 4px rgba(85, 85, 85, 0.6);
+    outline: 0 none;
+}
+.searchButton{
+    display:block;
+    position:absolute;
+    top:29px;
+    right:3px;
+    padding:5px;
+    background-color: #3b3b3b;
+    color:#e6e6e6;
+    border:none;
+    border-radius:2px;
+    cursor:pointer;
+}
+
+.searchButton:hover{
+    color:#8d8d8d;
+}
+
+#switchBasemap{
+    position:relative;
+    left:36%;
+    top:125px;
+    background-color: #606060;
+    border: 1px solid #3b3b3b;
+    border-radius: 3px;
+    padding: 1px;
+    color: white;
+}
+#switchBasemap:hover{
+    background-color: #919191;
+    cursor: pointer;
+}
+
+#switchLabel{
+    position:relative;
+    top: 110px;
+    left:77px;
+}
+
+
+.layersswitchLabel{
+    position:   relative;   
+    left: 77px;
+    top:-15px;
+}
+#satellitediv{
+    top:125px;
+    left:25px;
+}
+.onoffswitch {
+    position: relative; width: 47px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+    left:25px;
+    top:0;
+
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #3B3B3B; border-radius: 2px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 12px; padding: 0; line-height: 12px;
+    font-size: 11px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "OFF";
+    padding-left: 3px;
+    background-color: #8D8D8D; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "ON";
+    padding-right: 3px;
+    background-color: #97BF97; color: #FFFFFF;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 16px; margin: -2px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 31px;
+    border: 2px solid #3B3B3B; border-radius: 2px;
+    transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+}
+
+
+/* Outer */
+.popup {
+/*    width:100%;
+    height:100%;*/
+    display:none;
+    position:absolute   ;
+    bottom:20px;
+    right:1px;
+    background:rgba(0,0,0,0.75);
+    /*add map position size*/
+    height: 545px;
+    width:70%;
+
+}
+ 
+/* Inner */
+.popup-inner {
+    max-width:700px;
+    width:70%;
+    padding:40px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    -webkit-transform:translate(-50%, -50%);
+    transform:translate(-50%, -50%);
+    box-shadow:0px 2px 6px rgba(0,0,0,1);
+    border-radius:3px;
+    background:#fff;
+}
+ 
+/* Close Button */
+.popup-close {
+    width:30px;
+    height:30px;
+    padding-top:4px;
+    display:inline-block;
+    position:absolute;
+    top:0px;
+    right:0px;
+    transition:ease 0.25s all;
+    -webkit-transform:translate(50%, -50%);
+    transform:translate(50%, -50%);
+    border-radius:1000px;
+    background:rgba(0,0,0,0.8);
+    font-family:Arial, Sans-Serif;
+    font-size:20px;
+    text-align:center;
+    line-height:100%;
+    color:#fff;
+}
+
+    .smallscreen{
+        position: absolute;
+        top:24px;
+        width:89%;
+    }
+    #toggleSidebar{
+        display:none;
+    }
+    /*#pull-out{
+        display:none;
+    }*/
+    #pull-in{
+        display:none;
+    }
+#gpsButton{
+        display:none;
+    }
+    #mnhouselink, #mnsenlink, #ushouselink, #ussenatelink, #ussenate2link{
+        padding: 5px;
+        border-radius: 4px;
+        color:#5c728b;
+        font-size:  11px;
+        font-style:     italic;
+
+    }
+  #mnhouselink:hover, #mnsenlink:hover, #ushouselink:hover, #ussenatelink:hover, #ussenate2link:hover{
+    background-color: #3b3b3b;
+        color:#e6e6e6;
+  }
+ 
+/*Begin Responsive Web Design*/
+@media screen and (max-width: 500px) {
+  .leg_PageContent{
+     max-height: 645px;
+    }
+  .search{
+    background-color:white;
+    top:-60px;
+    width:100%;
+    border:none;
+    height:50px;
+  }
+  .form-group{
+    padding:7px 9px 9px 2px;
+  }
+  .form-group input{
+    position:relative;
+    left: 36px;
+    height:37px;
+    font-size:1.2em;
+     /* Firefox */
+        width: -moz-calc(100% - 69px);
+        /* WebKit */
+        width: -webkit-calc(100% - 69px);
+        /* Opera */
+        width: -o-calc(100% - 69px);
+        /* Standard */
+        width: calc(100% -69px);
+
+  }
+  #searchButton{
+    display:block;
+    position:absolute;
+    top:26px;
+    right:0;
+    padding:12px;
+    background-color: #3b3b3b;
+    color:#e6e6e6;
+    border:none;
+    border-radius:2px;
+}
+  #map{
+    /*position:absolute;*/
+    top:-630px;
+    width:99%;
+    height:500px;
+  }
+  #triangle-topright{
+    top:90px;
+  }
+  #sidebar{
+    top:-22px;
+    left:-100%;
+    z-index:101;
+    width:100%;
+    transition: all 0.5s ease-in 0s;
+    background-color:white;
+    height:609px;
+  }
+  #sidebar.animate{
+    left: 0px;
+    transition: all 0.5s ease-out 0s;
+    /*width: 250px;*/
+  }
+  #housedistrict, #senatedistrict, #ushousedistrict, #ussenatedistrict, #ussenatedistrict2{
+    left:0;
+  }
+  #sidebar.animate #housedistrict, #sidebar.animate #senatedistrict, #sidebar.animate #ushousedistrict, #sidebar.animate #ussenatedistrict, #sidebar.animate #ussenatedistrict2{
+    left:80px;
+  }
+  #map_layers{
+    top:90px;
+  }
+
+  #toggleSidebar{
+        display:block;
+        padding:5px;
+        background-color: #3b3b3b;
+        text-align:center;
+        margin:0;
+        color:#e6e6e6;
+    }
+  .popup{
+        width:100%;
+        height: 82%;
+    }
+    #geocodeFeedback{
+        text-align: center;
+    }
+    #map_reset{
+        bottom:-22px;
+    }
+    #pull-out{
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-right-radius: 5px;
+        border-top-right-radius: 5px;
+        background-color: #3b3b3b;
+        left: 0;
+        padding: 30px 15px;
+        position: absolute;
+        top: 50%;
+        z-index: 1;
+        color: #8d8d8d;
+    }
+    #pull-in{
+        display:block;
+        position:absolute;
+        right:15px;
+        top: 10px;
+        background-color: #3b3b3b;
+        color:#e6e6e6;
+        padding:7px 10px 7px 7px;
+        border-radius:5px;
+    }
+    #gpsButton{
+        display:block;
+        position:absolute;
+        top: 26px;
+        left:0;
+        padding: 11px 12px 12px 12px;
+        background-color:#3b3b3b;
+        color: #e6e6e6;
+        border:none;
+        border-radius:2px;
+    }
+    .search label {
+        left: 37px;
+        position: relative;
+    }
+}
+@media screen and (min-width: 501px) and (max-width: 800px) {
+/*    #mask{
+        background-color:red;        
+    }*/
+    #gpsButton{
+        display:none;
+    }
+    #map{
+        /* Firefox */
+        width: -moz-calc(99% - 286px);
+        /* WebKit */
+        width: -webkit-calc(99% - 286px);
+        /* Opera */
+        width: -o-calc(99% - 286px);
+        /* Standard */
+        width: calc(99% - 286px);
+    }
+}
