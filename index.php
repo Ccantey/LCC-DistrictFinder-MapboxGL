@@ -17,10 +17,11 @@
 	<script type="text/javascript" src="../../css/leg_core_20.js"></script>
 	<script type="text/javascript"  src="../../css/leg_mobile_20.js"></script>
 	<script type="text/javascript" src="../../css/js/hideshow2.js"></script>
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.15.0/mapbox-gl.css' rel='stylesheet' />
 	<link rel="stylesheet" href="css/plugins/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/app.css" />
-	<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.15.0/mapbox-gl.js'></script>
+	<script src='js/plugins/geojson-extent.js'></script>
     <!--uses Google JS APi -not geocoding API -->
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAPiQ_pNX0vOYz5w04VSn0WUTS_5knWOg" > 
     </script>
