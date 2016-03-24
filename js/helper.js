@@ -112,13 +112,7 @@ $( document ).ready(function() {
 	
 	//Toggle basemap
 	$('#satellitonoffswitch').click(function(){
-		if (map.hasLayer(vectorBasemap)){
-			map.removeLayer(vectorBasemap);
-			map.addLayer(streetsBasemap);
-		} else {
-			map.removeLayer(streetsBasemap);
-			map.addLayer(vectorBasemap);
-		}
+		toggleBaseLayers($('#satellitonoffswitch'),'satellite','emerald');
 	});
 
     //fetch overlay layers
@@ -147,7 +141,7 @@ $( document ).ready(function() {
 				//:checked = true -> leave it ... when I copied the switches I had initial states backwards
 		} else {
 			//:checked = false -> toggle map
-			toggleBaseLayers($('#satellitonoffswitch'),streetsBasemap,vectorBasemap);
+			toggleBaseLayers($('#satellitonoffswitch'),'satellite','emerald');
 			//$('#satellitonoffswitch').prop('checked', true);
 		}
 		//toggle all layer switches

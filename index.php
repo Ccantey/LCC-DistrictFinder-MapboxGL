@@ -136,7 +136,7 @@
 	    		<li>Single-click or touch the map to select a search location. </li>
 	    		<li>Select an elected official to view the official's web page/contact information.</li>
 	    		<li>Select <span class='contact'>Show District <i class="fa fa-external-link"></i></span> on member results to view the member's district boundary on the map.</li>
-	    		<li>Please note <span style="color:#5c728b; font-size:11px; padding:5px;"><i class="fa fa-info-circle"></i> Help</span> and <span style="color:#5c728b; font-size:11px; padding:5px;" class='noref' >Disclaimer <i class="fa fa-exclamation-triangle"></i> </span> below the map and <span style="color:#5c728b; font-size:11px; padding:5px;"><i class="fa fa-refresh"></i> Reset Map</span> above the map.</li>
+	    		<li>Please note <span style="color:#a54a36; font-size:11px; padding:5px;"><i class="fa fa-info-circle"></i> Help</span> and <span style="color:#a54a36; font-size:11px; padding:5px;" class='noref' >Disclaimer <i class="fa fa-exclamation-triangle"></i> </span> below the map and <span style="color:#a54a36; font-size:11px; padding:5px;"><i class="fa fa-refresh"></i> Reset Map</span> above the map.</li>
 
 	    	</ol>
 	

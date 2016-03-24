@@ -56,13 +56,11 @@ function initialize(){
 
 //toggle basemap layers
 function toggleBaseLayers(el, layer1, layer2){
-	//console.log(el, 'has been toggled');
+	console.log(el, 'has been toggled');
 	if (el.is(':checked')){
-		map.removeLayer(layer2);
-		map.addLayer(layer1);
+		map.setStyle('mapbox://styles/mapbox/' + layer2+ '-v8');
 	} else {
-		map.removeLayer(layer1);
-		map.addLayer(layer2);
+		map.setStyle('mapbox://styles/mapbox/' + layer1 + '-v8');
 	}
 }
 
