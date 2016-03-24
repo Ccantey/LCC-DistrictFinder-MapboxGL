@@ -141,7 +141,7 @@ $( document ).ready(function() {
 				//:checked = true -> leave it ... when I copied the switches I had initial states backwards
 		} else {
 			//:checked = false -> toggle map
-			toggleBaseLayers($('#satellitonoffswitch'),'satellite','emerald');
+			toggleBaseLayers($('#satellitonoffswitch'),'emerald','emerald');
 			//$('#satellitonoffswitch').prop('checked', true);
 		}
 		//toggle all layer switches
