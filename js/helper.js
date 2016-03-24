@@ -74,7 +74,7 @@ $( document ).ready(function() {
 		    				"opacity": 0.65
 						};
 						MinnesotaBoundaryLayer = data;
-						console.log(data);
+						// console.log(data);
 						map.addSource("minnesotaGeojson", {
 					        "type": "geojson",
 					        "data": MinnesotaBoundaryLayer
@@ -131,7 +131,7 @@ $( document ).ready(function() {
 
 	//map reset
 	$('#map_reset').click(function(){
-		map.fitBounds(bounds);
+		map.flyTo({center: [-93.6678,46.1706], zoom: 5});
 		$('#mask').show();
 		$('#geocodeFeedback').hide();
 		$("#geocodeAddress").val('');
@@ -177,7 +177,7 @@ $( document ).ready(function() {
     	$('.fa-map').css('color', '#e6e6e6');
     });    
 
-	 $('#loading').hide();
+	 $('.loader').hide();
 
 	console.log("Welcome to the 'Who Represents Me?' legislative district finder application, developed by the MN State Legislative Coordinating Commission. The application's responsive web design(RWD), open-source code can be found at 'https://github.com/Ccantey/LCC-DistrictFinder'.")
 

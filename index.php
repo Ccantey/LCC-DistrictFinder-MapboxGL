@@ -32,7 +32,7 @@
 	<h2 id='map_title'>Who Represents Me?</h2>
 	<div id='map_reset'><a class='noref'>Reset Map <i class="fa fa-refresh"></i></a></div>
     <a ><div id="triangle-topright"><i class="fa fa-map fa-lg"></i></div></a>
-    <img id="loading" src="images/loading.gif"/>
+    <div class="loader">Loading...</div>
 
     <div id="map_layers">
     	<div id="map_layers_content">

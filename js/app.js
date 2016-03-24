@@ -14,7 +14,7 @@ var geocoder = null;
 //Set initial basemap with initialize() - called in helper.js
 function initialize(){
 	$("#map").height('544px');
-	southWest = new mapboxgl.LngLat( -105.7140625, 41.86956);
+	southWest = new mapboxgl.LngLat( -104.7140625, 41.86956);
     northEast = new mapboxgl.LngLat( -84.202832, 50.1487464);
     //bounds = new mapboxgl.LngLatBounds(southWest, northEast);
     bounds = new mapboxgl.LngLatBounds(southWest,northEast);
@@ -68,7 +68,7 @@ function toggleBaseLayers(el, layer1, layer2){
 
 //fetch the overlay layers from WMS, published through FOSS mapserver (mapserver.org) - much faster than fetching large vector datasets through PGIS
 function getOverlayLayers(el, switchId){
-    $('#loading').show();
+    $('.loader').show();
 
     switchMap = {"countyonoffswitch": "cty2010", "cityonoffswitch":"mcd2015", "cononoffswitch":"cng2012", "ssonoffswitch":"sen2012_vtd2015", "shonoffswitch":"hse2012_vtd2015"}
     // console.log(typeof switchMap[switchId]);
@@ -76,7 +76,7 @@ function getOverlayLayers(el, switchId){
     if(el.is(':checked')){
     	map.removeLayer(overlayLayers[switchMap[switchId]]);
         $('.leaflet-marker-icon.'+switchMap[switchId]).hide();
-		$('#loading').hide();
+		$('.loader').hide();
     } else {
     	$('.leaflet-marker-icon.'+switchMap[switchId]).show();
 
@@ -89,17 +89,17 @@ function getOverlayLayers(el, switchId){
                 crs:L.CRS.EPSG4326,
 			    layers: switchMap[switchId]
 			}).addTo(map);
-			$('#loading').hide();
+			$('.loader').hide();
 		} else {
 			overlayLayers[switchMap[switchId]].addTo(map);
-			$('#loading').hide();
+			$('.loader').hide();
 		}
     }
 }
 
 function geoCodeAddress(geocoder, resultsMap) {
   var address = document.getElementById('geocodeAddress').value;
-  $("#loading").show();
+  $(".loader").show();
   geocoder.geocode({'address': address}, function(results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
       var precision = results[0].geometry.location_type;
@@ -122,7 +122,7 @@ function geoCodeAddress(geocoder, resultsMap) {
       geocodeFeedback(precision, components);
     } else {
       alert('Geocode was not successful for the following reason: ' + status);
-      $('#loading').hide();
+      $('.loader').hide();
     }
   });
 }
@@ -161,7 +161,7 @@ function identifyDistrict(d){
 		lat: d.lngLat.lat,
 		lng: d.lngLat.lng 
 	};
-    $("#loading").show();
+    $(".loader").show();
 	$.ajax("php/getPointData.php", {
 		 data: data,
 		success: function(result){			
@@ -210,15 +210,15 @@ function addMemberData(memberData){
 		$('#ussenatemember2').html('Al Franken <span class="party"> (DFL)</span>');
 		$('#ussenatedistrict2').html('U.S. Senate');
 		$('.ussenate2').attr('data-webid', 'http://www.franken.senate.gov/');
-		$("#loading").hide();
+		$(".loader").hide();
 	} else { 
 		$('#mask').show();
-		$('#loading').hide();
+		$('.loader').hide();
 	}	
 }
 
 function addMarker(e){
-	console.log([e.lngLat.lng, e.lngLat.lat]);
+	// console.log([e.lngLat.lng, e.lngLat.lat]);
     var mapclick = new mapboxgl.LngLat(e.lngLat.lng, e.lngLat.lat);
 	//remove sidebar formatting
 	$(".mnhouse, .mnsenate, .ushouse, .ussenate1, .ussenate2" ).removeClass('active');
@@ -260,7 +260,7 @@ function addMarker(e){
 // //Show the district on the map
 function showDistrict(div){
 	slideSidebar();
-	$("#loading").show();
+	$(".loader").show();
 
 	//div is the class name of the active member
 	divmap = {"mnhouse active":0, "mnsenate active":1, "ushouse active":2};
@@ -285,7 +285,7 @@ function showDistrict(div){
 
 	districtLayer = geojson.features[divmap[div]];
 
-    console.log(districtLayer);
+    // console.log(districtLayer);
      map.addSource("district", {
         "type": "geojson",
         "data": districtLayer
@@ -304,8 +304,9 @@ function showDistrict(div){
     
 	//zoom to selection
 	map.fitBounds(geojsonExtent(districtLayer), {padding:'100'});
+	$(".loader").hide();
 
-	$("#loading").hide();
+	
 }
 
 function removeLayers(c){
@@ -340,7 +341,7 @@ function removeLayers(c){
 
 function showSenateDistrict(div){
 	slideSidebar();
-    $("#loading").show();
+    $(".loader").show();
 
 	//remove preveious district layers.
 	//remove preveious district layers.
@@ -361,7 +362,8 @@ function showSenateDistrict(div){
     // mapDistrictsLayer = MinnesotaBoundaryLayer.addTo(map);
 	// map.fitBounds(mapDistrictsLayer.getBounds());
 	map.fitBounds(geojsonExtent(MinnesotaBoundaryLayer), {padding:'100'});
-	$("#loading").hide();
+	$(".loader").hide();
+	
 }
 
 function slideSidebar(){
@@ -400,7 +402,7 @@ function zoomToGPSLocation() {
 }
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
  alert('Geocode was not successful - Your browser does not support Geolocation');
-      $('#loading').hide();
+      $('.loader').hide();
 
 }
 
