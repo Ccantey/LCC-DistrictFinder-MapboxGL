@@ -1,5 +1,5 @@
 //global variables
-var map, geojson, switchMap ={}, bounds, districtLayer;
+var map, geojson, switchMap ={}, bounds, districtLayer, southWest, northEast;
 
 
 //map Layers
@@ -14,17 +14,17 @@ var geocoder = null;
 //Set initial basemap with initialize() - called in helper.js
 function initialize(){
 	$("#map").height('544px');
-	var southWest = new mapboxgl.LngLat( -105.7140625, 41.86956),
-        northEast = new mapboxgl.LngLat( -84.202832, 50.1487464);
+	southWest = new mapboxgl.LngLat( -105.7140625, 41.86956);
+    northEast = new mapboxgl.LngLat( -84.202832, 50.1487464);
     //bounds = new mapboxgl.LngLatBounds(southWest, northEast);
-    bounds = new mapboxgl.LngLatBounds();
+    bounds = new mapboxgl.LngLatBounds(southWest,northEast);
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2NhbnRleSIsImEiOiJjaW01MGpwdDcwMWppdWZtNnoxc3pidjZhIn0.0D2UtVeOtsJFaHr8761_JQ';
 	map = new mapboxgl.Map({
 		container: 'map', // container id
 		style: 'mapbox://styles/mapbox/emerald-v8',
 		center: [-93.6678,46.1706],
-		//maxBounds:bounds,		
+		maxBounds:bounds,		
 		zoom: 5
 	});
 
@@ -54,101 +54,105 @@ function initialize(){
 // 	toggleBaseLayers($('#satellitonoffswitch'),vectorBasemap,streetsBasemap);
 // };
 
-// //toggle basemap layers
-// function toggleBaseLayers(el, layer1, layer2){
-// 	//console.log(el, 'has been toggled');
-// 	if (el.is(':checked')){
-// 		map.removeLayer(layer2);
-// 		map.addLayer(layer1);
-// 	} else {
-// 		map.removeLayer(layer1);
-// 		map.addLayer(layer2);
-// 	}
-// }
+//toggle basemap layers
+function toggleBaseLayers(el, layer1, layer2){
+	//console.log(el, 'has been toggled');
+	if (el.is(':checked')){
+		map.removeLayer(layer2);
+		map.addLayer(layer1);
+	} else {
+		map.removeLayer(layer1);
+		map.addLayer(layer2);
+	}
+}
 
-// //fetch the overlay layers from WMS, published through FOSS mapserver (mapserver.org) - much faster than fetching large vector datasets through PGIS
-// function getOverlayLayers(el, switchId){
-//     $('#loading').show();
+//fetch the overlay layers from WMS, published through FOSS mapserver (mapserver.org) - much faster than fetching large vector datasets through PGIS
+function getOverlayLayers(el, switchId){
+    $('#loading').show();
 
-//     switchMap = {"countyonoffswitch": "cty2010", "cityonoffswitch":"mcd2015", "cononoffswitch":"cng2012", "ssonoffswitch":"sen2012_vtd2015", "shonoffswitch":"hse2012_vtd2015"}
-//     // console.log(typeof switchMap[switchId]);
+    switchMap = {"countyonoffswitch": "cty2010", "cityonoffswitch":"mcd2015", "cononoffswitch":"cng2012", "ssonoffswitch":"sen2012_vtd2015", "shonoffswitch":"hse2012_vtd2015"}
+    // console.log(typeof switchMap[switchId]);
    
-//     if(el.is(':checked')){
-//     	map.removeLayer(overlayLayers[switchMap[switchId]]);
-//         $('.leaflet-marker-icon.'+switchMap[switchId]).hide();
-// 		$('#loading').hide();
-//     } else {
-//     	$('.leaflet-marker-icon.'+switchMap[switchId]).show();
+    if(el.is(':checked')){
+    	map.removeLayer(overlayLayers[switchMap[switchId]]);
+        $('.leaflet-marker-icon.'+switchMap[switchId]).hide();
+		$('#loading').hide();
+    } else {
+    	$('.leaflet-marker-icon.'+switchMap[switchId]).show();
 
-//     	if(typeof overlayLayers[switchMap[switchId]] === 'undefined'){
-//     		overlayLayers[switchMap[switchId]] = L.tileLayer.wms('http://www.gis.leg.mn/cgi-bin/mapserv?map=/web/gis/OpenLayers/districts/data/mapserver.map', {
-// 			    format: 'image/png',
-// 			    transparent: false,
-// 			    minZoom: 6,
-// 			    zIndex: 3,
-//                 crs:L.CRS.EPSG4326,
-// 			    layers: switchMap[switchId]
-// 			}).addTo(map);
-// 			$('#loading').hide();
-// 		} else {
-// 			overlayLayers[switchMap[switchId]].addTo(map);
-// 			$('#loading').hide();
-// 		}
-//     }
-// }
+    	if(typeof overlayLayers[switchMap[switchId]] === 'undefined'){
+    		overlayLayers[switchMap[switchId]] = L.tileLayer.wms('http://www.gis.leg.mn/cgi-bin/mapserv?map=/web/gis/OpenLayers/districts/data/mapserver.map', {
+			    format: 'image/png',
+			    transparent: false,
+			    minZoom: 6,
+			    zIndex: 3,
+                crs:L.CRS.EPSG4326,
+			    layers: switchMap[switchId]
+			}).addTo(map);
+			$('#loading').hide();
+		} else {
+			overlayLayers[switchMap[switchId]].addTo(map);
+			$('#loading').hide();
+		}
+    }
+}
 
-// function geoCodeAddress(geocoder, resultsMap) {
-//   var address = document.getElementById('geocodeAddress').value;
-//   $("#loading").show();
-//   geocoder.geocode({'address': address}, function(results, status) {
-//     if (status === google.maps.GeocoderStatus.OK) {
-//       var precision = results[0].geometry.location_type;
-//       var components = results[0].address_components;
-//       var pos = {
-//         latlng: {lat:results[0].geometry.location.lat(),lng:results[0].geometry.location.lng()},
-//         lat:results[0].geometry.location.lat(),
-//         lng:results[0].geometry.location.lng()
-//       };
-//       // console.log(pos.lat);
-//       // console.log(pos.lng);
-//       map.setView(L.latLng(pos.lat,pos.lng),16);
-//       addMarker(pos);
-//       identifyDistrict(pos);
-//       geocodeFeedback(precision, components);
-//     } else {
-//       alert('Geocode was not successful for the following reason: ' + status);
-//       $('#loading').hide();
-//     }
-//   });
-// }
+function geoCodeAddress(geocoder, resultsMap) {
+  var address = document.getElementById('geocodeAddress').value;
+  $("#loading").show();
+  geocoder.geocode({'address': address}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      var precision = results[0].geometry.location_type;
+      var components = results[0].address_components;
+      var pos = {
+        lngLat: {lng:results[0].geometry.location.lng(),lat:results[0].geometry.location.lat()},
+        lat:results[0].geometry.location.lat(),
+        lng:results[0].geometry.location.lng()
+      };
 
-// function geocodeFeedback(precision, components){
-// 	//console.log(precision, 'location, center of ', components[0].types[0]);
-// 	var message = "";
-// 	var componentMap = {"street_number": "street", "postal_code": "zip code", "administrative_area_level_1": "state", "locality": "city", "administrative_area_level_2": "county", "route": "route", "intersection": "intersection", "political": "political division", "country": "country","administrative_area_level_3": "minor civil division", "administrative_area_level_4": 'minor civil division', "administrative_area_level_5": "minor civil division", "colloquial_area": "country", "neighborhood": "neighborhood", "premise": "building", "subpremise": "building", "natural_feature": "natural feature", "airport": "airport", "park": "park", "point_of_interest": "point of interest"};
+      // console.log(pos.lat);
+      // console.log(pos.lng);
+      //map.setView(L.latLng(pos.lat,pos.lng),16);
+      map.flyTo({
+      	center:[pos.lng,pos.lat],
+      	zoom:15
+      });
+      addMarker(pos);
+      identifyDistrict(pos);
+      geocodeFeedback(precision, components);
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+      $('#loading').hide();
+    }
+  });
+}
 
-// 	if (precision == "ROOFTOP"){
-// 		message = "Address match!";
-// 		$('#geocodeFeedback').html(message).css('color', 'green');
-// 		$('#geocodeFeedback').show();
-// 	} else {
-// 		message = "Approximate location! Center of " + componentMap[components[0].types[0]];
-// 		$('#geocodeFeedback').html(message).css('color', 'red');
-// 		$('#geocodeFeedback').show();
-// 	}
-// 	slideSidebar();
+function geocodeFeedback(precision, components){
+	//console.log(precision, 'location, center of ', components[0].types[0]);
+	var message = "";
+	var componentMap = {"street_number": "street", "postal_code": "zip code", "administrative_area_level_1": "state", "locality": "city", "administrative_area_level_2": "county", "route": "route", "intersection": "intersection", "political": "political division", "country": "country","administrative_area_level_3": "minor civil division", "administrative_area_level_4": 'minor civil division', "administrative_area_level_5": "minor civil division", "colloquial_area": "country", "neighborhood": "neighborhood", "premise": "building", "subpremise": "building", "natural_feature": "natural feature", "airport": "airport", "park": "park", "point_of_interest": "point of interest"};
+
+	if (precision == "ROOFTOP"){
+		message = "Address match!";
+		$('#geocodeFeedback').html(message).css('color', 'green');
+		$('#geocodeFeedback').show();
+	} else {
+		message = "Approximate location! Center of " + componentMap[components[0].types[0]];
+		$('#geocodeFeedback').html(message).css('color', 'red');
+		$('#geocodeFeedback').show();
+	}
+	slideSidebar();
 	
-// }
+}
 
-// //submit search text box - removed button for formatting space
-// function keypressInBox(e) {
-//     var code = (e.keyCode ? e.keyCode : e.which);
-//     if (code == 13) { //Enter keycode                        
-//         e.preventDefault();
-//         dataLayer.push({'event': 'enterKeyGeocode'});
-//         geoCodeAddress(geocoder, map);
-//     }
-// };
+//submit search text box - removed button for formatting space
+function keypressInBox(e) {
+    var code = (e.keyCode ? e.keyCode : e.which);
+    if (code == 13) { //Enter keycode                        
+        e.preventDefault();
+        geoCodeAddress(geocoder, map);
+    }
+};
 
 // //fetch location data from postgres on mouseclick/geocode submition
 function identifyDistrict(d){
@@ -214,7 +218,7 @@ function addMemberData(memberData){
 }
 
 function addMarker(e){
-	//console.log([e.lngLat.lng, e.lngLat.lat]);
+	console.log([e.lngLat.lng, e.lngLat.lat]);
     var mapclick = new mapboxgl.LngLat(e.lngLat.lng, e.lngLat.lat);
 	//remove sidebar formatting
 	$(".mnhouse, .mnsenate, .ushouse, .ussenate1, .ussenate2" ).removeClass('active');
@@ -224,14 +228,7 @@ function addMarker(e){
     $('#housephoto, #senatephoto, #ushousephoto, #ussenatephoto, #ussenatephoto2').removeAttr('src');
 
     //remove old pushpin and previous selected district layers 
-	if (typeof map.getSource('pointclick') !== "undefined" ){ 
-		console.log('remove previous marker');
-		map.removeSource('pointclick');		
-	}
-	if (typeof map.getLayer('mapDistrictsLayer') !== "undefined" ){ 		
-		map.removeLayer('mapDistrictsLayer')
-		map.removeSource('district');	
-	}
+	removeLayers('all')
 	//add marker
 	 map.addSource("pointclick", {
   		"type": "geojson",
@@ -242,8 +239,8 @@ function addMarker(e){
       			"coordinates": [e.lngLat.lng, e.lngLat.lat]
     		},
     		"properties": {
-      			"title": "Mapbox DC",
-      			"marker-symbol": "monument"
+      			"title": "mouseclick",
+      			"marker-symbol": "harbor"
     		}
   		}
 	});
@@ -253,8 +250,8 @@ function addMarker(e){
         type: 'symbol',
         source: 'pointclick',
         "layout": {
-        	"icon-image": "{marker-symbol}-15",
-            "icon-allow-overlap": true
+        	"icon-image": "marker_icon",
+        	"icon-size":1.5
         },
         "paint": {}
     });
@@ -273,14 +270,19 @@ function showDistrict(div){
 		map.removeLayer('mapDistrictsLayer')
 		map.removeSource('district');	
 	}
+
+	if (typeof map.getLayer('minnesota') !== "undefined" ){ 		
+		map.removeLayer('minnesota')
+		// map.removeSource('district');	
+	}
     
     //polygon overlay styling
-	var myStyle = {
-    	"color": "#991a36",
-    	"weight": 2,
-    	"opacity": 0.65
-	};
-	
+	// var myStyle = {
+ //    	"color": "#ff6600",
+ //    	"weight": 2,
+ //    	"opacity": 0.65
+	// };
+
 	districtLayer = geojson.features[divmap[div]];
 
     console.log(districtLayer);
@@ -295,7 +297,7 @@ function showDistrict(div){
         'source': 'district',
         'layout': {},
         'paint': {
-            'fill-color': '#991a36',
+            'fill-color': '#f26c4f',
             'fill-opacity': 0.65
         }
 	});    
@@ -306,19 +308,61 @@ function showDistrict(div){
 	$("#loading").hide();
 }
 
-// function showSenateDistrict(div){
-// 	slideSidebar();
-//     $("#loading").show();
+function removeLayers(c){
 
-// 	//remove preveious district layers.
-// 	if (typeof mapDistrictsLayer !== "undefined" ){ 
-// 		map.removeLayer(mapDistrictsLayer);			
-// 	}
+	switch (c){
+		case'all':
+		//remove old pushpin and previous selected district layers 
+		if (typeof map.getSource('pointclick') !== "undefined" ){ 
+			console.log('remove previous marker');
+			map.removeLayer('pointclick');		
+			map.removeSource('pointclick');
+		}
+		if (typeof map.getLayer('mapDistrictsLayer') !== "undefined" ){ 		
+			map.removeLayer('mapDistrictsLayer')
+			map.removeSource('district');	
+		}
+
+		if (typeof map.getLayer('minnesota') !== "undefined" ){ 		
+			map.removeLayer('minnesota')
+			map.removeSource('minnesotaGeojson');	
+		}
+		break;
+		case 'districts':
+		if (typeof map.getLayer('mapDistrictsLayer') !== "undefined" ){ 		
+			map.removeLayer('mapDistrictsLayer')
+			map.removeSource('district');	
+		}
+		break;
+	}
     
-//     mapDistrictsLayer = MinnesotaBoundaryLayer.addTo(map);
-// 	map.fitBounds(mapDistrictsLayer.getBounds());
-// 	$("#loading").hide();
-// }
+}
+
+function showSenateDistrict(div){
+	slideSidebar();
+    $("#loading").show();
+
+	//remove preveious district layers.
+	//remove preveious district layers.
+	removeLayers('districts');
+
+
+    map.addLayer({
+        'id': 'minnesota',
+        'type': 'fill',
+        'source': 'minnesotaGeojson',
+        'layout': {},
+        'paint': {
+            'fill-color': '#f26c4f',
+            'fill-opacity': 0.65
+        }
+	});  	
+    
+    // mapDistrictsLayer = MinnesotaBoundaryLayer.addTo(map);
+	// map.fitBounds(mapDistrictsLayer.getBounds());
+	map.fitBounds(geojsonExtent(MinnesotaBoundaryLayer), {padding:'100'});
+	$("#loading").hide();
+}
 
 function slideSidebar(){
 	if ($('#sidebar').hasClass('animate')){
@@ -334,39 +378,39 @@ function slideSidebar(){
 		    } catch(err){}} // Firebug throws a typeerror here - it doesn't break the app, 'easeInQuad' needs jQuery UI, but it forces the animation in desktop app... just ignore
 }
 
-// function zoomToGPSLocation() {
-// // Try HTML5 geolocation.
-//   if (navigator.geolocation) {
-//     navigator.geolocation.getCurrentPosition(function(position) {
-//       var pos = {
-//         latlng: {lat:position.coords.latitude,lng:position.coords.longitude},
-//         lat:position.coords.latitude,
-//         lng:position.coords.longitude
-//       };
+function zoomToGPSLocation() {
+// Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lngLat: {lng:results[0].geometry.location.lng(),lat:results[0].geometry.location.lat()},
+        lat:results[0].geometry.location.lat(),
+        lng:results[0].geometry.location.lng()
+      };
 
-//       addMarker(pos);
-// 	  identifyDistrict(pos);
-// 	  map.setView(L.latLng(pos.lat, pos.lng),13);
+      addMarker(pos);
+	  identifyDistrict(pos);
+	  map.setView(L.latLng(pos.lat, pos.lng),13);
 
-//     });
-//   } else {
-//     // Browser doesn't support Geolocation
-//     handleLocationError(false, infoWindow, map.getCenter());
-//   }
-// }
-// function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-//  alert('Geocode was not successful - Your browser does not support Geolocation');
-//       $('#loading').hide();
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+}
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+ alert('Geocode was not successful - Your browser does not support Geolocation');
+      $('#loading').hide();
 
-// }
+}
 
-// function toggleLayerSwitches (){
-//     var inputs = $(".onoffswitch-checkbox");
-//     for (var i = 0, il = inputs.length; i < il; i++) {
-//     	var inputsID = '#'+ inputs[i].id;
-//         if($(inputsID).not(':checked')){
-//         	$(inputsID).prop('checked', true);
-//         }         
-//     }	
-// }
+function toggleLayerSwitches (){
+    var inputs = $(".onoffswitch-checkbox");
+    for (var i = 0, il = inputs.length; i < il; i++) {
+    	var inputsID = '#'+ inputs[i].id;
+        if($(inputsID).not(':checked')){
+        	$(inputsID).prop('checked', true);
+        }         
+    }	
+}
 

@@ -22,6 +22,10 @@
     background-color: #eee !important;
 }
 
+.mapboxgl-canvas-container.mapboxgl-interactive, .mapboxgl-ctrl-nav-compass{
+    cursor:crosshair;
+}
+
 /*application css*/
 .contact{
     color: #5c728b;
@@ -146,19 +150,19 @@ ul{
 }
 .mnhouse:hover, .mnsenate:hover, .ushouse:hover, .ussenate1:hover, .ussenate2:hover{
     background-color: rgba(150,150,150,.41);
-    border-left: 3px solid #991a36;
-    /*border-right: 3px solid #991a36;*/
+    border-left: 3px solid #a54a36;
+    /*border-right: 3px solid #fcb228;*/
     cursor: pointer;
 }
 
 .active{
-    background-color: rgba(153,51,51,.41);
-    border-left: 3px solid #991a36;
-    /*border-right: 3px solid #991a36;*/
+    background-color: rgba(165,74,54,.6);
+    border-left: 3px solid #a54a36;
+    /*border-right: 3px solid #fcb228;*/
 }
 .active:hover{
-    background-color: rgba(153,51,51,.41);
-    border-left: 3px solid #991a36;
+    background-color: rgba(165,74,54,.6);
+    border-left: 3px solid #a54a36;
 }
 
 .mnhouse, .mnsenate,.ushouse, .ussenate1, .ussenate2{
