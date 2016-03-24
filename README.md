@@ -1,9 +1,9 @@
 ## Minnesota Legislative Coordinating Commission
-### Legislative district mapping application User Interface
+### Legislative district mapping application User Interface (beta -> in-progress 3/24/2016)
 
-The **LCC Precinct Finder** application is a completely open-source full-stack, responsive (RWD) application, built with PostGIS, Leaflet. It extends the **LCC Who Represents Me?** page to include voter tabulation districts (voting precincts) and hopefully a little WebGL from Mapbox.
+The **LCC Precinct Finder** application is an open-source, full-stack, responsive (RWD) application, built with PostGIS, and Mapbox GL. It extends the **LCC Who Represents Me?** page to include voter tabulation districts (voting precincts) and hopefully a little WebGL from Mapbox.
 
-See it in the wild at [http://gis.leg.mn](http://www.gis.leg.mn/OpenLayers/precincts/)
+See it in the wild at [http://gis.leg.mn](http://www.gis.leg.mn/iMaps/precincts/)
 
 ### What's included?
 - Code
@@ -18,11 +18,9 @@ See it in the wild at [http://gis.leg.mn](http://www.gis.leg.mn/OpenLayers/preci
 
 ### What does it do?
 - Fun geodev tools
+  - Mapbox GL
   - Geocodes addresses (Google JavaScript API authentication token required)
   - Zooms to location on cellphones (application optimized using RWD)
-- Consumes [MapServer WMS](http://mapserver.org/index.html)
-  - Free and open source map service publishing
-  - Much faster rendering than vectors
 - Basic UI/UX
   - Point and click on the map, or use the search bar to retrieve legislative data
   - Click on a legislative member to retrieve members district boundary or website
