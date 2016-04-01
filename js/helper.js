@@ -1,7 +1,6 @@
 $( document ).ready(function() {
 	//kickoff map logic
     initialize();
-
     //map navigation
     map.on('click', function(e){
     	addMarker(e);
@@ -117,10 +116,11 @@ $( document ).ready(function() {
 
     //fetch overlay layers
 	$('#countyonoffswitch, #cononoffswitch, #ssonoffswitch, #shonoffswitch, #cityonoffswitch').click(function(){
-		//console.log(typeof($(this).attr('id')));
-		var elementName = $(this).attr('id')
+		$('.loader').show();
+		var elementName = $(this).attr('id');
         getOverlayLayers($(this), $(this).attr('id'));
         dataLayer.push({'event': 'layerToggle_'+ elementName});
+
 	});
 
 	//map reset

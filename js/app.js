@@ -1,5 +1,6 @@
 //global variables
-var map, geojson, switchMap ={}, bounds, districtLayer, southWest, northEast;
+var map, geojson, bounds, districtLayer, southWest, northEast;
+var switchMap = {"countyonoffswitch": "cty2010", "cityonoffswitch":"mcd2015", "cononoffswitch":"cng2012", "ssonoffswitch":"sen2012_vtd2015", "shonoffswitch":"hse2012_vtd2015"};
 
 
 //map Layers
@@ -7,6 +8,7 @@ var pushPinMarker, vectorBasemap, streetsBasemap, MinnesotaBoundaryLayer;
 
 //map overlay layers... called like overlayLayers.CongressionalBoundaryLayer
 var overlayLayers ={};
+var overlayLayer;
 
 //google geocoder
 var geocoder = null;
@@ -66,34 +68,44 @@ function toggleBaseLayers(el, layer1, layer2){
 
 //fetch the overlay layers from WMS, published through FOSS mapserver (mapserver.org) - much faster than fetching large vector datasets through PGIS
 function getOverlayLayers(el, switchId){
-    $('.loader').show();
+     
 
-    switchMap = {"countyonoffswitch": "cty2010", "cityonoffswitch":"mcd2015", "cononoffswitch":"cng2012", "ssonoffswitch":"sen2012_vtd2015", "shonoffswitch":"hse2012_vtd2015"}
-    // console.log(typeof switchMap[switchId]);
-   
+    // $.getJSON("./data/"+switchMap[switchId]+".json", function(data) {     
+		   
+		    // });
     if(el.is(':checked')){
-    	map.removeLayer(overlayLayers[switchMap[switchId]]);
-        $('.leaflet-marker-icon.'+switchMap[switchId]).hide();
+    	if (typeof map.getLayer(switchMap[switchId]) !== "undefined" ){ 		
+		    map.removeLayer(switchMap[switchId])
+		    map.removeSource(switchMap[switchId]);	
+	    }
+
+        // $('.leaflet-marker-icon.'+switchMap[switchId]).hide();
 		$('.loader').hide();
     } else {
-    	$('.leaflet-marker-icon.'+switchMap[switchId]).show();
-
-    	if(typeof overlayLayers[switchMap[switchId]] === 'undefined'){
-    		overlayLayers[switchMap[switchId]] = L.tileLayer.wms('http://www.gis.leg.mn/cgi-bin/mapserv?map=/web/gis/OpenLayers/districts/data/mapserver.map', {
-			    format: 'image/png',
-			    transparent: false,
-			    minZoom: 6,
-			    zIndex: 3,
-                crs:L.CRS.EPSG4326,
-			    layers: switchMap[switchId]
-			}).addTo(map);
-			$('.loader').hide();
-		} else {
-			overlayLayers[switchMap[switchId]].addTo(map);
-			$('.loader').hide();
-		}
+    	// $('.leaflet-marker-icon.'+switchMap[switchId]).show();
+           map.addSource(switchMap[switchId], {
+		        "type": "geojson",
+		        "data": "./data/"+switchMap[switchId]+".json"
+		    });
+    
+		    map.addLayer({
+		        'id': switchMap[switchId],
+		        'type': 'line',
+		        'source': switchMap[switchId],
+		        'layout': {},
+		        'paint': {
+		            'line-color': '#000',
+		            'line-opacity': 0.65
+		        }
+			});
+	            
+		console.log(switchMap[switchId]);
+       
     }
+
+$('.loader').hide();
 }
+
 
 function geoCodeAddress(geocoder, resultsMap) {
   var address = document.getElementById('geocodeAddress').value;
@@ -226,7 +238,7 @@ function addMarker(e){
     $('#housephoto, #senatephoto, #ushousephoto, #ussenatephoto, #ussenatephoto2').removeAttr('src');
 
     //remove old pushpin and previous selected district layers 
-	removeLayers('all')
+	removeLayers('all');
 	//add marker
 	 map.addSource("pointclick", {
   		"type": "geojson",
@@ -280,7 +292,6 @@ function showDistrict(div){
  //    	"weight": 2,
  //    	"opacity": 0.65
 	// };
-
 	districtLayer = geojson.features[divmap[div]];
 
     // console.log(districtLayer);
