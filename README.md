@@ -3,7 +3,7 @@
 
 The **LCC Precinct Finder** application is an open-source, full-stack, responsive (RWD) application, built with PostGIS, and Mapbox GL. It extends the **LCC Who Represents Me?** page to include voter tabulation districts (voting precincts) and hopefully a little WebGL from Mapbox.
 
-See it in the wild at [http://gis.leg.mn](http://www.gis.leg.mn/iMaps/precincts/)
+See it in the wild at [http://gis.leg.mn](http://www.gis.leg.mn/iMaps/districts-webGL/)
 
 ### What's included?
 - Code
