@@ -22,7 +22,7 @@ function initialize(){
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2NhbnRleSIsImEiOiJjaW01MGpwdDcwMWppdWZtNnoxc3pidjZhIn0.0D2UtVeOtsJFaHr8761_JQ';
 	map = new mapboxgl.Map({
 		container: 'map', // container id
-		style: 'mapbox://styles/mapbox/emerald-v8',
+		style: 'mapbox://styles/ccantey/cimi2xon00022ypnhqkjob9k9',
 		center: [-93.6678,46.1706],
 		maxBounds:bounds,		
 		zoom: 5
@@ -58,7 +58,7 @@ function initialize(){
 function toggleBaseLayers(el, layer1, layer2){
 	console.log(el, 'has been toggled');
 	if (el.is(':checked')){
-		map.setStyle('mapbox://styles/mapbox/' + layer2+ '-v8');
+		map.setStyle('mapbox://styles/ccantey/cimi2xon00022ypnhqkjob9k9');
 	} else {
 		map.setStyle('mapbox://styles/mapbox/' + layer1 + '-v8');
 	}
@@ -238,7 +238,7 @@ function addMarker(e){
     		},
     		"properties": {
       			"title": "mouseclick",
-      			"marker-symbol": "harbor"
+      			"marker-symbol": "myRedMarker"
     		}
   		}
 	});
@@ -248,7 +248,7 @@ function addMarker(e){
         type: 'symbol',
         source: 'pointclick',
         "layout": {
-        	"icon-image": "marker_icon",
+        	"icon-image": "{marker-symbol}",
         	"icon-size":1.5
         },
         "paint": {}
