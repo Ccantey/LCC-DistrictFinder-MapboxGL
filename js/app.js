@@ -30,31 +30,8 @@ function initialize(){
 		zoom: 5
 	});
 
-
     geocoder = new google.maps.Geocoder;
 }
-// 	vectorBasemap = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2NhbnRleSIsImEiOiJjaWVsdDNubmEwMGU3czNtNDRyNjRpdTVqIn0.yFaW4Ty6VE3GHkrDvdbW6g', {
-// 					maxZoom: 18,
-// 					minZoom: 6,
-// 					 zIndex: 1,
-// 					attribution: 'Basemap data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, ' +
-// 						'Legislative data &copy; <a href="http://www.gis.leg.mn/">LCC-GIS</a>, ' +
-// 						'Imagery Â© <a href="http://mapbox.com">Mapbox</a>',
-// 					id: 'mapbox.streets'
-// 					}).addTo(map);
-
-// 	streetsBasemap = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2NhbnRleSIsImEiOiJjaWVsdDNubmEwMGU3czNtNDRyNjRpdTVqIn0.yFaW4Ty6VE3GHkrDvdbW6g', {
-// 					maxZoom: 18,
-// 					minZoom: 6,
-// 					 zIndex: 1,
-// 					attribution: 'Basemap data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, ' +
-// 						'Legislative data &copy; <a href="http://www.gis.leg.mn/">LCC-GIS</a>, ' +
-// 						'Imagery Â© <a href="http://mapbox.com">Mapbox</a>',
-// 					id: 'mapbox.streets-satellite'
-// 					})
-
-// 	toggleBaseLayers($('#satellitonoffswitch'),vectorBasemap,streetsBasemap);
-// };
 
 //toggle basemap layers
 function toggleBaseLayers(el, layer1, layer2){
@@ -66,23 +43,23 @@ function toggleBaseLayers(el, layer1, layer2){
 	}
 }
 
-//fetch the overlay layers from WMS, published through FOSS mapserver (mapserver.org) - much faster than fetching large vector datasets through PGIS
+//previously fetched WMS layers - rewritten to call geojson - WMS not supported by vector tiles
 function getOverlayLayers(el, switchId){
-     
-
-    // $.getJSON("./data/"+switchMap[switchId]+".json", function(data) {     
-		   
-		    // });
+    // $.getJSON("./data/"+switchMap[switchId]+".json", function(data) {  });   
+    styleMap={'hse2012_vtd2015':['#ff6600',2, [2,2]], 
+              'sen2012_vtd2015':['#ff6600',2,0], 
+              'cng2012':['#ff3399',4,0], 
+              'mcd2015':['#231f20',0.65,0], 
+              'cty2010':['#231f20',2,0], 
+              }
+		
     if(el.is(':checked')){
     	if (typeof map.getLayer(switchMap[switchId]) !== "undefined" ){ 		
 		    map.removeLayer(switchMap[switchId])
 		    map.removeSource(switchMap[switchId]);	
 	    }
-
-        // $('.leaflet-marker-icon.'+switchMap[switchId]).hide();
 		$('.loader').hide();
     } else {
-    	// $('.leaflet-marker-icon.'+switchMap[switchId]).show();
            map.addSource(switchMap[switchId], {
 		        "type": "geojson",
 		        "data": "./data/"+switchMap[switchId]+".json"
@@ -92,18 +69,20 @@ function getOverlayLayers(el, switchId){
 		        'id': switchMap[switchId],
 		        'type': 'line',
 		        'source': switchMap[switchId],
-		        'layout': {},
+		        'layout': {
+		        },
 		        'paint': {
-		            'line-color': '#000',
-		            'line-opacity': 0.65
+		            'line-color': styleMap[switchMap[switchId]][0],
+		            'line-opacity': 0.65,
+		            'line-width': styleMap[switchMap[switchId]][1]
+		            //'filter':['all'],['']		            
 		        }
 			});
-	            
-		console.log(switchMap[switchId]);
-       
+        
+	    if (switchMap[switchId]=='hse2012_vtd2015'){
+	    	 map.setPaintProperty ('hse2012_vtd2015', 'line-dasharray', [2,2]);
+	    };
     }
-
-$('.loader').hide();
 }
 
 
@@ -230,7 +209,7 @@ function addMemberData(memberData){
 function addMarker(e){
 	// console.log([e.lngLat.lng, e.lngLat.lat]);
     var mapclick = new mapboxgl.LngLat(e.lngLat.lng, e.lngLat.lat);
-	//remove sidebar formatting
+	//remove previous legislative data
 	$(".mnhouse, .mnsenate, .ushouse, .ussenate1, .ussenate2" ).removeClass('active');
 	$('.memberLink').hide();
 	$('#housemember, #senatemember, #ushousemember, #ussenatemember, #ussenatemember2').html('');
@@ -285,13 +264,7 @@ function showDistrict(div){
 		map.removeLayer('minnesota')
 		// map.removeSource('district');	
 	}
-    
-    //polygon overlay styling
-	// var myStyle = {
- //    	"color": "#ff6600",
- //    	"weight": 2,
- //    	"opacity": 0.65
-	// };
+
 	districtLayer = geojson.features[divmap[div]];
 
     // console.log(districtLayer);
@@ -309,13 +282,11 @@ function showDistrict(div){
             'fill-color': '#f26c4f',
             'fill-opacity': 0.65
         }
-	});    
+	},"pointclick"); //important! add before 'pointclick' - this is how you control order of layers.
     
 	//zoom to selection
 	map.fitBounds(geojsonExtent(districtLayer), {padding:'100'});
-	$(".loader").hide();
-
-	
+	$(".loader").hide();	
 }
 
 function removeLayers(c){
@@ -332,10 +303,25 @@ function removeLayers(c){
 			map.removeLayer('mapDistrictsLayer')
 			map.removeSource('district');	
 		}
-
 		if (typeof map.getLayer('minnesota') !== "undefined" ){ 		
 			map.removeLayer('minnesota')
 			map.removeSource('minnesotaGeojson');	
+		}
+		if (typeof map.getLayer('hse2012_vtd2015') !== "undefined"){ 		
+			map.removeLayer('hse2012_vtd2015')
+			map.removeSource('hse2012_vtd2015');	
+		}
+		if (typeof map.getLayer('sen2012_vtd2015') !== "undefined"){
+			map.removeLayer('sen2012_vtd2015')
+			map.removeSource('sen2012_vtd2015');
+		}
+		if (typeof map.getLayer('cng2012') !== "undefined"){
+			map.removeLayer('cng2012')
+			map.removeSource('cng2012');
+		}
+		if (typeof map.getLayer('cty2010') !== "undefined"){
+			map.removeLayer('cty2010');
+			map.removeSource('cty2010');
 		}
 		break;
 		case 'districts':
@@ -344,8 +330,7 @@ function removeLayers(c){
 			map.removeSource('district');	
 		}
 		break;
-	}
-    
+	}    
 }
 
 function showSenateDistrict(div){
@@ -353,9 +338,7 @@ function showSenateDistrict(div){
     $(".loader").show();
 
 	//remove preveious district layers.
-	//remove preveious district layers.
 	removeLayers('districts');
-
 
     map.addLayer({
         'id': 'minnesota',
@@ -409,10 +392,10 @@ function zoomToGPSLocation() {
     handleLocationError(false, infoWindow, map.getCenter());
   }
 }
+
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
  alert('Geocode was not successful - Your browser does not support Geolocation');
       $('.loader').hide();
-
 }
 
 function toggleLayerSwitches (){
