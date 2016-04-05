@@ -78,6 +78,9 @@ function getOverlayLayers(el, switchId){
 		            //'filter':['all'],['']		            
 		        }
 			});
+			if (map.loaded){
+				$('.loader').hide();
+			}
         
 	    if (switchMap[switchId]=='hse2012_vtd2015'){
 	    	 map.setPaintProperty ('hse2012_vtd2015', 'line-dasharray', [2,2]);

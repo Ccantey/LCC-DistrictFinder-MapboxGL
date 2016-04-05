@@ -14,7 +14,6 @@ See it in the wild at [http://gis.leg.mn](http://www.gis.leg.mn/iMaps/districts-
   - MN Municipal Boundaries
   - MN Counties
   - MN House, Senate, Congressional images
-  - mapserver.map WMS configuration file
 
 ### What does it do?
 - Fun geodev tools
