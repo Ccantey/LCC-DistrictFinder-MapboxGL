@@ -45,33 +45,28 @@ $( document ).ready(function() {
 	// hide links - format is off until results come back
     $('.memberLink').hide();
 
-    $( ".mnhouse, .mnsenate, .ushouse, .ussenate1, .ussenate2" ).click(function(e) {
-        var link = '';
-        link = $(this).attr('data-webid');
-    	//console.log($(this).data('webid'))
-    	window.open(link)
+    $( ".mnhouse, .mnsenate, .ushouse" ).click(function(e) {
+          $(this).addClass('active').siblings().removeClass('active');
+          $(this).find(".geo_hint").css("color","rgba(100,100,100,0)");
+	      showDistrict($(this).attr('class'));
     });
 
+    // $(".geo_hint").css("color","rgba(0,0,0,0)");
+    $( ".mnhouse, .mnsenate, .ushouse, .ussenate1, .ussenate2" ).on("mouseenter",function(e){
+        if ($(this).hasClass('active') == false){
+            $(this).find(".geo_hint").css("color","rgba(255,255,255,.60)");
+        }
+    }).on("mouseleave", function(){
+    	$(".geo_hint").css("color","rgba(0,0,0,0)");
+    })
+
 	// Members UI click turn red with 'active' class
-	$( ".memberLink" ).click(function(e) {
-		e.stopPropagation();
-		var mom = $(this).parent();
-		var grandma = mom.parent();
-		var child = $(this).children();
-		//console.log(mom);
-		//console.log(grandma);
-		//console.log(child);
-        grandma.addClass('active').siblings().removeClass('active');
-        //get static minnesota geojson (faster than php)
-		if (child.is('#ussenatelink') || child.is('#ussenate2link')){
-			//console.log(child);
-		  	if(typeof MinnesotaBoundaryLayer === 'undefined'){
-					$.getJSON("./data/Minnesota2015.json", function(data) {
-						var myStyle = {
-		    				"color": "#991a36",
-		    				"weight": 2,
-		    				"opacity": 0.65
-						};
+	//get static minnesota geojson (faster than php)
+	$( ".ussenate1, .ussenate2" ).click(function() {
+	 	 $(this).addClass('active').siblings().removeClass('active');
+         $(this).find(".geo_hint").css("color","rgba(100,100,100,0)");
+	  	if(typeof MinnesotaBoundaryLayer === 'undefined'){
+			$.getJSON("./data/Minnesota2015.json", function(data) {
 						MinnesotaBoundaryLayer = data;
 						// console.log(data);
 						map.addSource("minnesotaGeojson", {
@@ -80,18 +75,13 @@ $( document ).ready(function() {
 					    });
 						//.addTo(map);
 
+		  			}).done(function(){		  				
+  				       showSenateDistrict();
+  			        });
+  		} else {
+  			showSenateDistrict();
+  		}	  	
 
-		  			}).done(function(){
-		  				
-		  				showSenateDistrict();
-		  			});
-		  		} else {
-		  			showSenateDistrict();
-		  		}	
-		} else {
-	        showDistrict(grandma.attr('class'));
-	    }
-	    
 	});
 
 	//Open layers tab

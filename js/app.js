@@ -180,28 +180,28 @@ function addMemberData(memberData){
 	    $('#housephoto').attr('src', 'images/House/tn_'+memberData.features[0].properties.district+'.jpg').attr('width','auto').attr('height','auto');
 		$('#housemember').html(memberData.features[0].properties.name + '<span class="party"> ('+memberData.features[0].properties.party+')</span>').delay("slow").fadeIn();
 		$('#housedistrict').html('MN House - ' + memberData.features[0].properties.district).delay("slow").fadeIn();
-		$('.mnhouse').attr('data-webid', 'http://www.house.leg.state.mn.us/members/members.asp?id='+ memberData.features[0].properties.memid);
+		$('#mnhouselink').attr('href', 'http://www.house.leg.state.mn.us/members/members.asp?id='+ memberData.features[0].properties.memid);
 		
 		$('#senatephoto').attr('src', 'images/Senate/'+memberData.features[1].properties.district+'.jpg').attr('width','auto').attr('height','auto');
 		$('#senatemember').html(memberData.features[1].properties.name + '<span class="party">  ('+memberData.features[1].properties.party+')</span>');
 		$('#senatedistrict').html('MN Senate - ' + memberData.features[1].properties.district);
-		$('.mnsenate').attr('data-webid', 'http://www.senate.leg.state.mn.us/members/member_bio.php?leg_id='+ memberData.features[1].properties.memid);
+        $('#mnsenlink').attr('href', 'http://www.senate.leg.state.mn.us/members/member_bio.php?leg_id='+ memberData.features[1].properties.memid);		
 		
 		$('#ushousephoto').attr('src', 'images/USHouse/US'+memberData.features[2].properties.district+'.jpg').attr('width','auto').attr('height','auto');
 		$('#ushousemember').html(memberData.features[2].properties.name + ' <span class="party"> ('+memberData.features[2].properties.party+')</span>');
 		$('#ushousedistrict').html('U.S. House - ' + memberData.features[2].properties.district);
 		var lastname = memberData.features[2].properties.name.split(" ")[1];
-		$('.ushouse').attr('data-webid', 'http://'+ lastname +'.house.gov/');
+		$('#ushouselink').attr('href', 'http://'+ lastname +'.house.gov/');
 		
 		$('#ussenatephoto').attr('src', 'images/USSenate/USsenate1.jpg').attr('width','auto').attr('height','auto');
 		$('#ussenatemember').html('Amy Klobuchar <span class="party"> (DFL)</span>');
 		$('#ussenatedistrict').html('U.S. Senate' );
-		$('.ussenate1').attr('data-webid', 'http://www.klobuchar.senate.gov/');
+		$('#ussenatelink').attr('href', 'http://www.klobuchar.senate.gov/');
 		
 		$('#ussenatephoto2').attr('src', 'images/USSenate/USsenate2.jpg').attr('width','auto').attr('height','auto');
 		$('#ussenatemember2').html('Al Franken <span class="party"> (DFL)</span>');
 		$('#ussenatedistrict2').html('U.S. Senate');
-		$('.ussenate2').attr('data-webid', 'http://www.franken.senate.gov/');
+		$('#ussenate2link').attr('href', 'http://www.franken.senate.gov/');
 		$(".loader").hide();
 	} else { 
 		$('#mask').show();
@@ -326,11 +326,21 @@ function removeLayers(c){
 			map.removeLayer('cty2010');
 			map.removeSource('cty2010');
 		}
+		if (typeof map.getLayer('minnesota') !== "undefined"){
+			map.removeLayer('minnesota');
+			// map.removeSource('minnesotaGeojson');
+		}
 		break;
 		case 'districts':
 		if (typeof map.getLayer('mapDistrictsLayer') !== "undefined" ){ 		
 			map.removeLayer('mapDistrictsLayer')
 			map.removeSource('district');	
+		}
+		break;
+		case 'minnesota':
+		if (typeof map.getLayer('minnesota') !== "undefined" ){ 		
+			map.removeLayer('minnesota')
+			// map.removeSource('minnesotaGeojson');	
 		}
 		break;
 	}    
@@ -339,10 +349,9 @@ function removeLayers(c){
 function showSenateDistrict(div){
 	slideSidebar();
     $(".loader").show();
-
 	//remove preveious district layers.
 	removeLayers('districts');
-
+    removeLayers('minnesota');
     map.addLayer({
         'id': 'minnesota',
         'type': 'fill',

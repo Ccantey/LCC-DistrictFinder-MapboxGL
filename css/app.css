@@ -183,6 +183,16 @@ ul{
     border-left: 3px solid #a7a5a6;
     width:282px;
 }
+.geo_hint{
+    left:80px;
+    position:relative;
+    text-align:left;
+    top:10px;
+    color: rgba(100, 100, 100, 0);
+    font-weight: bold;
+    /*font-family: */
+
+}
 .mnhouse, .mnsenate, .ushouse, .ussenate1, .ussenate2 {
     height:87px;
     background-color: #e6e6e6;
@@ -221,7 +231,7 @@ ul{
     font-weight: bold;
     /*bottom: 80px;*/
     left:80px;
-    top:5px;
+    top:0px;
     text-align: left;
     z-index: 101;
 }
@@ -229,7 +239,7 @@ ul{
 .lcc_gis_memberdistrict{
     position: relative;
     left: 80px;
-    top:10px;
+    top:5px;
     text-align: left;
 }
 #officials img {
@@ -237,7 +247,7 @@ ul{
     min-height: 87px;
     max-width: 65%;
     position: relative;
-    top: -55px;
+    top: -69px;
     border:none;
 }
 
