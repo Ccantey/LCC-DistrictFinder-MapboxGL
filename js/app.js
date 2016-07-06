@@ -37,8 +37,6 @@ function initialize(){
 		zoom: 5
 	});
 
-
-
     geocoder = new google.maps.Geocoder;
 }
 
@@ -48,29 +46,20 @@ function toggleBaseLayers(el, layer1, layer2){
 	if (el.is(':checked')){
 		map.setStyle('mapbox://styles/ccantey/cimi2xon00022ypnhqkjob9k9');
 	} else {
-		map.setStyle('mapbox://styles/mapbox/' + layer1 + '-v8');
+		map.setStyle('mapbox://styles/mapbox/' + layer1 + '-v9');
 	}
 }
 
 //previously fetched WMS layers - rewritten to call geojson - WMS not supported by vector tiles
 function getOverlayLayers(el, switchId){
-    // $.getJSON("./data/"+switchMap[switchId]+".json", function(data) {  });   
-    // styleMap={'hse2012_vtd2015':['#ff6600',2, [2,2]], 
-    //           'sen2012_vtd2015':['#ff6600',2,0], 
-    //           'cng2012':['#ff3399',4,0], 
-    //           'mcd2015':['#231f20',0.65,0], 
-    //           'cty2010':['#231f20',2,0], 
-    //           }
+
     for (layers in switchMap[switchId])	{
-    	// console.log(switchMap[switchId])
-    	// console.log(switchMap[switchId][layers])
+
 	    if(el.is(':checked')){	    	
 	        var visibility = map.getLayoutProperty(switchMap[switchId][layers], 'visibility');
-            // console.log(layers, visibility);
 	    	if (visibility === 'visible'){     	    	
 			      map.setLayoutProperty(switchMap[switchId][layers], 'visibility', 'none');
 			    }	
-		    
 			$('.loader').hide();
 	    } else {	           
 			map.setLayoutProperty(switchMap[switchId][layers], 'visibility', 'visible');
@@ -99,7 +88,8 @@ function geoCodeAddress(geocoder, resultsMap) {
       //map.setView(L.latLng(pos.lat,pos.lng),16);
       map.flyTo({
       	center:[pos.lng,pos.lat],
-      	zoom:15
+      	zoom:15,
+      	speed:1.75
       });
       addMarker(pos);
       identifyDistrict(pos);
@@ -213,7 +203,7 @@ function addMarker(e){
     $('#housephoto, #senatephoto, #ushousephoto, #ussenatephoto, #ussenatephoto2').removeAttr('src');
 
     //remove old pushpin and previous selected district layers 
-	removeLayers('all');
+	removeLayers('pushpin');
 	//add marker
 	 map.addSource("pointclick", {
   		"type": "geojson",
@@ -256,8 +246,8 @@ function showDistrict(div){
 		map.removeSource('district');	
 	}
 
-	if (typeof map.getLayer('minnesota') !== "undefined" ){ 		
-		map.removeLayer('minnesota')
+	if (typeof map.getLayer('minnesotaGeojson') !== "undefined" ){ 		
+		map.removeLayer('minnesotaGeojson')
 		// map.removeSource('district');	
 	}
 
@@ -297,31 +287,14 @@ function removeLayers(c){
 		}
 		if (typeof map.getLayer('mapDistrictsLayer') !== "undefined" ){ 		
 			map.removeLayer('mapDistrictsLayer')
-			map.removeSource('district');	
+			// map.removeSource('district');	
 		}
-		if (typeof map.getLayer('minnesota') !== "undefined" ){ 		
-			map.removeLayer('minnesota')
+		if (typeof map.getLayer('minnesotaGeojson') !== "undefined" ){ 		
+			map.removeLayer('minnesotaGeojson')
 			map.removeSource('minnesotaGeojson');	
 		}
-		if (typeof map.getLayer('hse2012_vtd2015') !== "undefined"){ 		
-			map.removeLayer('hse2012_vtd2015')
-			map.removeSource('hse2012_vtd2015');	
-		}
-		if (typeof map.getLayer('sen2012_vtd2015') !== "undefined"){
-			map.removeLayer('sen2012_vtd2015')
-			map.removeSource('sen2012_vtd2015');
-		}
-		if (typeof map.getLayer('cng2012') !== "undefined"){
-			map.removeLayer('cng2012')
-			map.removeSource('cng2012');
-		}
-		if (typeof map.getLayer('cty2010') !== "undefined"){
-			map.removeLayer('cty2010');
-			map.removeSource('cty2010');
-		}
-		if (typeof map.getLayer('minnesota') !== "undefined"){
-			map.removeLayer('minnesota');
-			// map.removeSource('minnesotaGeojson');
+		for (layers in overlayLayers)	{
+		    map.setLayoutProperty(overlayLayers[layers], 'visibility', 'none');
 		}
 		break;
 		case 'districts':
@@ -331,11 +304,19 @@ function removeLayers(c){
 		}
 		break;
 		case 'minnesota':
-		if (typeof map.getLayer('minnesota') !== "undefined" ){ 		
-			map.removeLayer('minnesota')
-			// map.removeSource('minnesotaGeojson');	
+		if (typeof map.getLayer('minnesotaGeojson') !== "undefined" ){ 		
+			map.removeLayer('minnesotaGeojson')
+			map.removeSource('minnesotaGeojson');	
 		}
 		break;
+		case 'pushpin':
+		//remove old pushpin and previous selected district layers 
+		if (typeof map.getSource('pointclick') !== "undefined" ){ 
+			console.log('remove previous marker');
+			map.removeLayer('pointclick');		
+			map.removeSource('pointclick');
+		}
+
 	}    
 }
 
@@ -344,9 +325,9 @@ function showSenateDistrict(div){
     $(".loader").show();
 	//remove preveious district layers.
 	removeLayers('districts');
-    removeLayers('minnesota');
+    removeLayers('minnesotaGeojson');
     map.addLayer({
-        'id': 'minnesota',
+        'id': 'minnesotaGeojson',
         'type': 'fill',
         'source': 'minnesotaGeojson',
         'layout': {},

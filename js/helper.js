@@ -2,15 +2,15 @@ $( document ).ready(function() {
 	//kickoff map logic
     initialize();
     //map navigation
-    map.on('load', function(){
-    	// e.preventDefault();
-    	// e.stopPropagation();
+    // map.on('load', function(){
+    // 	// e.preventDefault();
+    // 	// e.stopPropagation();
 
-    	for (layer in overlayLayers){
-    	    console.log(overlayLayers[layer]);
-            map.setLayoutProperty(overlayLayers[layer], 'visibility', 'none');
-         };
-    })
+    // 	for (layer in overlayLayers){
+    // 	    console.log(overlayLayers[layer]);
+    //         map.setLayoutProperty(overlayLayers[layer], 'visibility', 'none');
+    //      };
+    // });
     map.on('click', function(e){
     	addMarker(e);
   //       $('#housephoto, #senatephoto, #ushousephoto, #ussenatephoto, #ussenatephoto2').attr('src',"data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=").attr('width',0).attr('height',0);;
@@ -110,7 +110,7 @@ $( document ).ready(function() {
 	
 	//Toggle basemap
 	$('#satellitonoffswitch').click(function(){
-		toggleBaseLayers($('#satellitonoffswitch'),'satellite','emerald');
+		toggleBaseLayers($('#satellitonoffswitch'),'satellite');
 	});
 
     //fetch overlay layers
@@ -124,7 +124,7 @@ $( document ).ready(function() {
 
 	//map reset
 	$('#map_reset').click(function(){
-		map.flyTo({center: [-93.6678,46.1706], zoom: 5});
+		map.flyTo({center: [-93.6678,46.1706], zoom: 5, speed:3});
 		$('#mask').show();
 		$('#geocodeFeedback').hide();
 		$("#geocodeAddress").val('');
@@ -140,7 +140,7 @@ $( document ).ready(function() {
 				//:checked = true -> leave it ... when I copied the switches I had initial states backwards
 		} else {
 			//:checked = false -> toggle map
-			toggleBaseLayers($('#satellitonoffswitch'),'emerald','emerald');
+			map.setStyle('mapbox://styles/ccantey/cimi2xon00022ypnhqkjob9k9');
 			//$('#satellitonoffswitch').prop('checked', true);
 		}
 		//toggle all layer switches
