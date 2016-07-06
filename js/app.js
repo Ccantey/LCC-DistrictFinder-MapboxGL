@@ -1,14 +1,21 @@
 //global variables
 var map, geojson, bounds, districtLayer, southWest, northEast;
-var switchMap = {"countyonoffswitch": "cty2010", "cityonoffswitch":"mcd2015", "cononoffswitch":"cng2012", "ssonoffswitch":"sen2012_vtd2015", "shonoffswitch":"hse2012_vtd2015"};
+var switchMap = {
+	"countyonoffswitch": "cty2010", 
+	"cityonoffswitch":"mcd2015", 
+    "cononoffswitch":['cng2012-symbols', 'cng2012'], 
+    "ssonoffswitch":['sen2012-vtd2015-symbols','sen2012-vtd2015-line'], 
+    "shonoffswitch":['hse2012-vtd2015-symbols','hse2012-vtd2015-line']
+};
 
 
 //map Layers
 var pushPinMarker, vectorBasemap, streetsBasemap, MinnesotaBoundaryLayer;
 
 //map overlay layers... called like overlayLayers.CongressionalBoundaryLayer
-var overlayLayers ={};
-var overlayLayer;
+var overlayLayers =['hse2012-vtd2015-symbols','hse2012-vtd2015-line','hse2012-vtd2015-polygon',
+                    'sen2012-vtd2015-symbols','sen2012-vtd2015-line', 'sen2012-vtd2015-polygon',
+                    'cng2012-symbols', 'cng2012'];
 
 //google geocoder
 var geocoder = null;
@@ -30,6 +37,8 @@ function initialize(){
 		zoom: 5
 	});
 
+
+
     geocoder = new google.maps.Geocoder;
 }
 
@@ -46,52 +55,35 @@ function toggleBaseLayers(el, layer1, layer2){
 //previously fetched WMS layers - rewritten to call geojson - WMS not supported by vector tiles
 function getOverlayLayers(el, switchId){
     // $.getJSON("./data/"+switchMap[switchId]+".json", function(data) {  });   
-    styleMap={'hse2012_vtd2015':['#ff6600',2, [2,2]], 
-              'sen2012_vtd2015':['#ff6600',2,0], 
-              'cng2012':['#ff3399',4,0], 
-              'mcd2015':['#231f20',0.65,0], 
-              'cty2010':['#231f20',2,0], 
-              }
-		
-    if(el.is(':checked')){
-    	if (typeof map.getLayer(switchMap[switchId]) !== "undefined" ){ 		
-		    map.removeLayer(switchMap[switchId])
-		    map.removeSource(switchMap[switchId]);	
-	    }
-		$('.loader').hide();
-    } else {
-           map.addSource(switchMap[switchId], {
-		        "type": "geojson",
-		        "data": "./data/"+switchMap[switchId]+".json"
-		    });
-    
-		    map.addLayer({
-		        'id': switchMap[switchId],
-		        'type': 'line',
-		        'source': switchMap[switchId],
-		        'layout': {
-		        },
-		        'paint': {
-		            'line-color': styleMap[switchMap[switchId]][0],
-		            'line-opacity': 0.65,
-		            'line-width': styleMap[switchMap[switchId]][1]
-		            //'filter':['all'],['']		            
-		        }
-			});
-			if (map.loaded){
-				$('.loader').hide();
-			}
-        
-	    if (switchMap[switchId]=='hse2012_vtd2015'){
-	    	 map.setPaintProperty ('hse2012_vtd2015', 'line-dasharray', [2,2]);
-	    };
-    }
+    // styleMap={'hse2012_vtd2015':['#ff6600',2, [2,2]], 
+    //           'sen2012_vtd2015':['#ff6600',2,0], 
+    //           'cng2012':['#ff3399',4,0], 
+    //           'mcd2015':['#231f20',0.65,0], 
+    //           'cty2010':['#231f20',2,0], 
+    //           }
+    for (layers in switchMap[switchId])	{
+    	// console.log(switchMap[switchId])
+    	// console.log(switchMap[switchId][layers])
+	    if(el.is(':checked')){	    	
+	        var visibility = map.getLayoutProperty(switchMap[switchId][layers], 'visibility');
+            // console.log(layers, visibility);
+	    	if (visibility === 'visible'){     	    	
+			      map.setLayoutProperty(switchMap[switchId][layers], 'visibility', 'none');
+			    }	
+		    
+			$('.loader').hide();
+	    } else {	           
+			map.setLayoutProperty(switchMap[switchId][layers], 'visibility', 'visible');
+			$(".loader").hide();
+		}
+	}
 }
+
 
 
 function geoCodeAddress(geocoder, resultsMap) {
   var address = document.getElementById('geocodeAddress').value;
-  $(".loader").show();
+  
   geocoder.geocode({'address': address}, function(results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
       var precision = results[0].geometry.location_type;
@@ -148,6 +140,7 @@ function keypressInBox(e) {
 
 // //fetch location data from postgres on mouseclick/geocode submition
 function identifyDistrict(d){
+
 	// console.log(d.latlng); 
 	var data = {
 		lat: d.lngLat.lat,

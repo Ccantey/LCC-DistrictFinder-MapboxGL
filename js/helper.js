@@ -2,6 +2,15 @@ $( document ).ready(function() {
 	//kickoff map logic
     initialize();
     //map navigation
+    map.on('load', function(){
+    	// e.preventDefault();
+    	// e.stopPropagation();
+
+    	for (layer in overlayLayers){
+    	    console.log(overlayLayers[layer]);
+            map.setLayoutProperty(overlayLayers[layer], 'visibility', 'none');
+         };
+    })
     map.on('click', function(e){
     	addMarker(e);
   //       $('#housephoto, #senatephoto, #ushousephoto, #ussenatephoto, #ussenatephoto2').attr('src',"data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=").attr('width',0).attr('height',0);;
