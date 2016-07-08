@@ -287,7 +287,7 @@ function removeLayers(c){
 		}
 		if (typeof map.getLayer('mapDistrictsLayer') !== "undefined" ){ 		
 			map.removeLayer('mapDistrictsLayer')
-			// map.removeSource('district');	
+			map.removeSource('district');	
 		}
 		if (typeof map.getLayer('minnesotaGeojson') !== "undefined" ){ 		
 			map.removeLayer('minnesotaGeojson')
