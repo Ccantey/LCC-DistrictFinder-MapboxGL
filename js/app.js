@@ -226,7 +226,8 @@ function addMarker(e){
         source: 'pointclick',
         "layout": {
         	"icon-image": "{marker-symbol}",
-        	"icon-size":1.5
+        	"icon-size":1.5,
+        	"icon-offset": [0, -13]
         },
         "paint": {}
     });
