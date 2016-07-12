@@ -239,34 +239,43 @@ function addMarker(e){
 
 // //Show the district on the map
 function showDistrict(div){
+	console.log(div)
 	slideSidebar();
 	$(".loader").show();
 
 	//div is the class name of the active member
-	divmap = {"mnhouse active":0, "mnsenate active":1, "ushouse active":2};
+	divmap = {"mnhouse active": [0,'hse2012-vtd2015-polygon', 'hse2012-vtd2015-line'], 
+	         "mnsenate active": [1, 'sen2012-vtd2015-polygon', 'hse2012-vtd2015-line'], 
+	         "ushouse active":  [2, 'sen2012-vtd2015-polygon', 'hse2012-vtd2015-polygon']
+	        };
 
     // need to remove here for change in member selection
 	removeLayers('districts');
 	removeLayers('minnesota');
     
-	districtLayer = geojson.features[divmap[div]];
-
+	districtLayer = geojson.features[divmap[div][0]];
+	queryLayer  = [divmap[div][1], divmap[div][2]];
+    console.log(queryLayer)
+    map.setLayoutProperty(queryLayer[0], 'visibility', 'visible');
+    map.setFilter(queryLayer[0], ['!=', 'district', String(districtLayer.properties.district)]);
+    map.setLayoutProperty(queryLayer[1], 'visibility', 'visible');
+    map.setFilter(queryLayer[1], ['==', 'district', String(districtLayer.properties.district)]);
     // console.log(districtLayer);
-     map.addSource("district", {
-        "type": "geojson",
-        "data": districtLayer
-    });
-	//.addTo(map);
-	map.addLayer({
-        'id': 'mapDistrictsLayer',
-        'type': 'fill',
-        'source': 'district',
-        'layout': {},
-        'paint': {
-            'fill-color': '#f26c4f',
-            'fill-opacity': 0.65
-        }
-	},"pointclick"); //important! add before 'pointclick' - this is how you control order of layers.
+ //     map.addSource("district", {
+ //        "type": "geojson",
+ //        "data": districtLayer
+ //    });
+	// //.addTo(map);
+	// map.addLayer({
+ //        'id': 'mapDistrictsLayer',
+ //        'type': 'fill',
+ //        'source': 'district',
+ //        'layout': {},
+ //        'paint': {
+ //            'fill-color': '#f26c4f',
+ //            'fill-opacity': 0.65
+ //        }
+	// },"pointclick"); //important! add before 'pointclick' - this is how you control order of layers.
     
 	//zoom to selection
 	map.fitBounds(geojsonExtent(districtLayer), {padding:'100'});
