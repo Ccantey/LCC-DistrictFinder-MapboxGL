@@ -1,5 +1,15 @@
 //global variables
-var map, geojson, bounds, districtLayer, southWest, northEast;
+var map, geojson, bounds, southWest, northEast;
+
+//map Layers
+var districtLayer, MinnesotaBoundaryLayer;
+
+//map overlay layers... used in getOverlayLayers() and removeLayers('all')
+var overlayLayers =['hse2012-vtd2015-symbols','hse2012-vtd2015-line','hse2012-vtd2015-polygon',
+                    'sen2012-vtd2015-symbols','sen2012-vtd2015-line', 'sen2012-vtd2015-polygon',
+                    'cng2012-symbols', 'cng2012'];
+
+//switch map to toggle overlay layers in getOvelayLayers()
 var switchMap = {
 	"countyonoffswitch": "cty2010", 
 	"cityonoffswitch":"mcd2015", 
@@ -7,15 +17,6 @@ var switchMap = {
     "ssonoffswitch":['sen2012-vtd2015-symbols','sen2012-vtd2015-line'], 
     "shonoffswitch":['hse2012-vtd2015-symbols','hse2012-vtd2015-line']
 };
-
-
-//map Layers
-var pushPinMarker, vectorBasemap, streetsBasemap, MinnesotaBoundaryLayer;
-
-//map overlay layers... called like overlayLayers.CongressionalBoundaryLayer
-var overlayLayers =['hse2012-vtd2015-symbols','hse2012-vtd2015-line','hse2012-vtd2015-polygon',
-                    'sen2012-vtd2015-symbols','sen2012-vtd2015-line', 'sen2012-vtd2015-polygon',
-                    'cng2012-symbols', 'cng2012'];
 
 //google geocoder
 var geocoder = null;
@@ -194,7 +195,7 @@ function addMemberData(memberData){
 
 function addMarker(e){
 	// console.log([e.lngLat.lng, e.lngLat.lat]);
-    var mapclick = new mapboxgl.LngLat(e.lngLat.lng, e.lngLat.lat);
+    // var mapclick = new mapboxgl.LngLat(e.lngLat.lng, e.lngLat.lat);
 	//remove previous legislative data
 	$(".mnhouse, .mnsenate, .ushouse, .ussenate1, .ussenate2" ).removeClass('active');
 	$('.memberLink').hide();
@@ -206,6 +207,7 @@ function addMarker(e){
 	removeLayers('pushpin');
 	removeLayers('districts');
 	removeLayers('minnesota');
+
 	//add marker
 	 map.addSource("pointclick", {
   		"type": "geojson",
@@ -243,19 +245,9 @@ function showDistrict(div){
 	//div is the class name of the active member
 	divmap = {"mnhouse active":0, "mnsenate active":1, "ushouse active":2};
 
-    // removeLayers('pushpin');
+    // need to remove here for change in member selection
 	removeLayers('districts');
 	removeLayers('minnesota');
-	//remove preveious district layers.
-	// if (typeof map.getLayer('mapDistrictsLayer') !== "undefined" ){ 		
-	// 	map.removeLayer('mapDistrictsLayer')
-	// 	map.removeSource('district');	
-	// }
-    
-	// if (typeof map.getLayer('minnesotaGeojson') !== "undefined" ){ 		
-	// 	map.removeLayer('minnesotaGeojson')
-	// 	// map.removeSource('district');	
-	// }
     
 	districtLayer = geojson.features[divmap[div]];
 
@@ -369,14 +361,18 @@ function zoomToGPSLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       var pos = {
-        lngLat: {lng:results[0].geometry.location.lng(),lat:results[0].geometry.location.lat()},
-        lat:results[0].geometry.location.lat(),
-        lng:results[0].geometry.location.lng()
+        lngLat: {lat:position.coords.latitude,lng:position.coords.longitude},
+        lat:position.coords.latitude,
+        lng:position.coords.longitude
       };
 
       addMarker(pos);
 	  identifyDistrict(pos);
-	  map.setView(L.latLng(pos.lat, pos.lng),13);
+	  map.flyTo({
+      	center:[pos.lng,pos.lat],
+      	zoom:15,
+      	speed:1.75
+      });
 
     });
   } else {
@@ -384,10 +380,10 @@ function zoomToGPSLocation() {
     handleLocationError(false, infoWindow, map.getCenter());
   }
 }
-
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
  alert('Geocode was not successful - Your browser does not support Geolocation');
       $('.loader').hide();
+
 }
 
 function toggleLayerSwitches (){
