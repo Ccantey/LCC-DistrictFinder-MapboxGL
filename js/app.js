@@ -204,6 +204,8 @@ function addMarker(e){
 
     //remove old pushpin and previous selected district layers 
 	removeLayers('pushpin');
+	removeLayers('districts');
+	removeLayers('minnesota');
 	//add marker
 	 map.addSource("pointclick", {
   		"type": "geojson",
@@ -215,7 +217,7 @@ function addMarker(e){
     		},
     		"properties": {
       			"title": "mouseclick",
-      			"marker-symbol": "myRedMarker"
+      			"marker-symbol": "myMarker-Blue-Shadow"
     		}
   		}
 	});
@@ -226,7 +228,7 @@ function addMarker(e){
         source: 'pointclick',
         "layout": {
         	"icon-image": "{marker-symbol}",
-        	"icon-size":1.5,
+        	"icon-size":1,
         	"icon-offset": [0, -13]
         },
         "paint": {}
@@ -241,17 +243,20 @@ function showDistrict(div){
 	//div is the class name of the active member
 	divmap = {"mnhouse active":0, "mnsenate active":1, "ushouse active":2};
 
+    // removeLayers('pushpin');
+	removeLayers('districts');
+	removeLayers('minnesota');
 	//remove preveious district layers.
-	if (typeof map.getLayer('mapDistrictsLayer') !== "undefined" ){ 		
-		map.removeLayer('mapDistrictsLayer')
-		map.removeSource('district');	
-	}
-
-	if (typeof map.getLayer('minnesotaGeojson') !== "undefined" ){ 		
-		map.removeLayer('minnesotaGeojson')
-		// map.removeSource('district');	
-	}
-
+	// if (typeof map.getLayer('mapDistrictsLayer') !== "undefined" ){ 		
+	// 	map.removeLayer('mapDistrictsLayer')
+	// 	map.removeSource('district');	
+	// }
+    
+	// if (typeof map.getLayer('minnesotaGeojson') !== "undefined" ){ 		
+	// 	map.removeLayer('minnesotaGeojson')
+	// 	// map.removeSource('district');	
+	// }
+    
 	districtLayer = geojson.features[divmap[div]];
 
     // console.log(districtLayer);
@@ -302,7 +307,7 @@ function removeLayers(c){
 		if (typeof map.getLayer('mapDistrictsLayer') !== "undefined" ){ 		
 			map.removeLayer('mapDistrictsLayer')
 			map.removeSource('district');	
-		}
+		} 
 		break;
 		case 'minnesota':
 		if (typeof map.getLayer('minnesotaGeojson') !== "undefined" ){ 		
