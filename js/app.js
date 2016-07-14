@@ -2,11 +2,11 @@
 var map, geojson, bounds, southWest, northEast;
 
 //map Layers
-var districtLayer, MinnesotaBoundaryLayer;
+var districtLayer, queryLayer, MinnesotaBoundaryLayer;
 
 //map overlay layers... used in getOverlayLayers() and removeLayers('all')
 var overlayLayers =['hse2012-vtd2015-symbols','hse2012-vtd2015-line','hse2012-vtd2015-polygon',
-                    'sen2012-vtd2015-symbols','sen2012-vtd2015-line', 'sen2012-vtd2015-polygon',
+                    'sen2012-vtd2015-symbols','sen2012-vtd2015-line', 'sen2012-vtd2015-symbols',
                     'cng2012-symbols', 'cng2012'];
 
 //switch map to toggle overlay layers in getOvelayLayers()
@@ -64,6 +64,7 @@ function getOverlayLayers(el, switchId){
 			$('.loader').hide();
 	    } else {	           
 			map.setLayoutProperty(switchMap[switchId][layers], 'visibility', 'visible');
+			// map.setFilter(switchMap[switchId][layers], ['has', 'name']); //show all lines (remove filter)
 			$(".loader").hide();
 		}
 	}
@@ -244,9 +245,9 @@ function showDistrict(div){
 	$(".loader").show();
 
 	//div is the class name of the active member
-	divmap = {"mnhouse active": [0,'hse2012-vtd2015-polygon', 'hse2012-vtd2015-line'], 
-	         "mnsenate active": [1, 'sen2012-vtd2015-polygon', 'hse2012-vtd2015-line'], 
-	         "ushouse active":  [2, 'sen2012-vtd2015-polygon', 'hse2012-vtd2015-polygon']
+	divmap = {"mnhouse active": [0,'hse2012-vtd2015-polygon', 'hse2012-vtd2015-line', 'hse2012-vtd2015-symbols'], 
+	         "mnsenate active": [1, 'sen2012-vtd2015-polygon', 'sen2012-vtd2015-line', 'sen2012-vtd2015-symbols'], 
+	         "ushouse active":  [2, 'cng2012-symbols', 'cng2012']
 	        };
 
     // need to remove here for change in member selection
@@ -254,12 +255,22 @@ function showDistrict(div){
 	removeLayers('minnesota');
     
 	districtLayer = geojson.features[divmap[div][0]];
-	queryLayer  = [divmap[div][1], divmap[div][2]];
+	queryLayer  = [divmap[div][1], divmap[div][2], divmap[div][3]];
     console.log(queryLayer)
+    //clear previous selection
+    
+
+    //show current selection
     map.setLayoutProperty(queryLayer[0], 'visibility', 'visible');
     map.setFilter(queryLayer[0], ['!=', 'district', String(districtLayer.properties.district)]);
     map.setLayoutProperty(queryLayer[1], 'visibility', 'visible');
-    map.setFilter(queryLayer[1], ['==', 'district', String(districtLayer.properties.district)]);
+    map.setLayoutProperty(queryLayer[2], 'visibility', 'visible');
+    
+    //TOGGLE APPROPIATE SWITCH IF TURNING ON ALL LAYERS
+    // TO FILTER LINES AROUND SHADOW USE THIS 
+    // map.setFilter(queryLayer[1], ['==', 'district', String(districtLayer.properties.district)]);
+
+
     // console.log(districtLayer);
  //     map.addSource("district", {
  //        "type": "geojson",
@@ -302,12 +313,15 @@ function removeLayers(c){
 		}
 		for (layers in overlayLayers)	{
 		    map.setLayoutProperty(overlayLayers[layers], 'visibility', 'none');
+		    // map.setFilter(overlayLayers[layers], ['!=', 'district', String(overlayLayers[layers]]);//hse2012-vtd2015-polygon
+		    map.setFilter(overlayLayers[layers], ['has', 'district'])
 		}
 		break;
 		case 'districts':
-		if (typeof map.getLayer('mapDistrictsLayer') !== "undefined" ){ 		
-			map.removeLayer('mapDistrictsLayer')
-			map.removeSource('district');	
+		if (typeof districtLayer !== "undefined" ){ 		
+			map.setFilter(queryLayer[0], ['!has', 'district']);
+            map.setFilter(queryLayer[1], ['!has', 'district']);	
+            map.setFilter(queryLayer[2], ['!has', 'district']);
 		} 
 		break;
 		case 'minnesota':
@@ -395,7 +409,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 }
 
-function toggleLayerSwitches (){
+function resetLayerSwitches (){
     var inputs = $(".onoffswitch-checkbox");
     for (var i = 0, il = inputs.length; i < il; i++) {
     	var inputsID = '#'+ inputs[i].id;

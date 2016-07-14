@@ -1,6 +1,7 @@
 /*override leg css*/
 .leg_PageContent{
-    max-height: 615px;
+    max-height: 625px;
+    min-height:625px;
     font-family: arial;
     color:#3b3b3b;
     /*margin:0;*/
@@ -15,11 +16,21 @@
     border-radius:3px;
 } 
 
+.leg_PageFooter{
+    margin: 1em 0 0;
+}
+
 .leg_PageContent ul, .leg_PageContent ol {
     margin-left: 2em;
 }
 .leg_PageContent a:focus{
     background-color: #eee !important;
+}
+
+.leg_PageContent hr{
+    margin:10px;
+    height:1px;
+    background-color: #a7a5a6;
 }
 
 .mapboxgl-canvas-container.mapboxgl-interactive, .mapboxgl-ctrl-nav-compass{
@@ -84,10 +95,11 @@
     border-left: 3px solid #a7a5a6;
 }
 #mask p{
-    margin-top: 35px;
+    margin-top: 10px;
     padding:0 10px;
 }
-#mask ol{
+#mask ul{
+    margin-top:-7px;
     font-size: 1.1em;
 }
 #mask img{
@@ -96,7 +108,14 @@
 }
 #mask li{
         padding:7px;
-    }
+}
+
+.helpers{
+    color:#888;
+    margin: 15px 6px 0 -21px;
+    text-align: center;
+    font-size: 0.9em;
+}
 
 #map{
     width:70%;
@@ -274,8 +293,8 @@ ul{
 #map_reset{
     position:relative;
     text-align: right;
-    font-size: 11px;
-    bottom:8px;
+    font-size: 13px;
+    bottom:6px;
     z-index: 1001;
 }
 
@@ -302,9 +321,9 @@ ul{
 }
 
 #map_help{
-    font-size: 11px;
+    font-size: 13px;
     position: absolute;
-    bottom:4px;
+    bottom:5px;
     left:30%;
     z-index: 101;
 }
@@ -319,9 +338,9 @@ ul{
 }
 
 #map_disclaimer{
-    font-size: 11px;
+    font-size: 13px;
     position: absolute;
-    bottom:4px;
+    bottom:5px;
     right:0;
     z-index: 101;
 }
@@ -432,6 +451,10 @@ ul{
     color:#8d8d8d;
 }
 
+.center{
+    margin-left: 76px;
+    color: #888;
+}
 #switchBasemap{
     position:relative;
     left:36%;
@@ -519,7 +542,7 @@ ul{
     height:100%;*/
     display:none;
     position:absolute   ;
-    bottom:20px;
+    bottom:27px;
     right:1px;
     background:rgba(0,0,0,0.75);
     /*add map position size*/

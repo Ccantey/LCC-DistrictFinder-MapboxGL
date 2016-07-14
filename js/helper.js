@@ -135,7 +135,7 @@ $( document ).ready(function() {
 			//$('#satellitonoffswitch').prop('checked', true);
 		}
 		//toggle all layer switches
-		toggleLayerSwitches();
+		resetLayerSwitches();
 		//Remove all layers except the basemap -- down here because its an asychronous thead apparently
 		removeLayers('all');
 	});
