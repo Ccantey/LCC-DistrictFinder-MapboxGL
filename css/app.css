@@ -213,6 +213,7 @@ ul{
 
 }
 .mnhouse, .mnsenate, .ushouse, .ussenate1, .ussenate2 {
+    position:relative;
     height:87px;
     background-color: #e6e6e6;
     border-top: 1px solid #a7a5a6;
@@ -265,8 +266,8 @@ ul{
     height: 100%;
     min-height: 87px;
     max-width: 65%;
-    position: relative;
-    top: -67px;
+    position: absolute;
+    top: 0;
     border:none;
 }
 
