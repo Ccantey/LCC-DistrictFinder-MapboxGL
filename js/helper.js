@@ -126,7 +126,7 @@ $( document ).ready(function() {
 
 	//map reset
 	$('#map_reset').click(function(){
-		map.flyTo({center: [-93.6678,46.1706], zoom: 5, speed:3});
+		map.flyTo({center: [-93.6678,46.1706], zoom: 5, pitch: 0, speed:3});
 		$('#mask').show();
 		$('#geocodeFeedback').hide();
 		$("#geocodeAddress").val('');
