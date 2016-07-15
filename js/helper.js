@@ -27,6 +27,17 @@ $( document ).ready(function() {
 		slideSidebar();
 	});
 
+    $('.mapboxgl-ctrl-compass').click(function(){
+    	if ($(this).hasClass('rotated')){
+            map.easeTo({pitch: 0});
+            $('.arrow').css({transform: 'rotate(0deg)'});
+    	} else{
+    		map.easeTo({pitch: 60});
+    		$('.arrow').css({transform: 'rotate(180deg)'});
+    	}    	
+    	$(this).toggleClass('rotated');
+
+    })
     // on small screens allow geolocation
     $('#gpsButton').click(function(e){
     	e.preventDefault();

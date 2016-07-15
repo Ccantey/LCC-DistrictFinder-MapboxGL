@@ -112,7 +112,7 @@
 
 .helpers{
     color:#888;
-    margin: 15px 6px 0 -21px;
+    margin: 15px 12px 0 -21px;
     text-align: center;
     font-size: 0.9em;
 }
@@ -229,12 +229,12 @@ ul{
 }
 
 .active{
-    background-color: rgba(165,74,54,.6);
+    background-color: rgba(0,0,0,.4);
     border-left: 3px solid #a54a36;
     /*border-right: 3px solid #fcb228;*/
 }
 .active:hover{
-    background-color: rgba(165,74,54,.6);
+    background-color: rgba(0,0,0,.4);
     border-left: 3px solid #a54a36;
 }
 
@@ -453,7 +453,7 @@ ul{
 }
 
 .center{
-    margin-left: 76px;
+    margin-left: 87px;
     color: #888;
 }
 #switchBasemap{

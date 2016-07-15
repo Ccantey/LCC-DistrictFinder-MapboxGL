@@ -38,6 +38,9 @@ function initialize(){
 		zoom: 5
 	});
 
+    map.addControl(new mapboxgl.Navigation({
+    	position:'top-left'
+    }));
     geocoder = new google.maps.Geocoder;
 }
 
@@ -259,12 +262,18 @@ function showDistrict(div){
     console.log(queryLayer)
     //clear previous selection
     
+    var selectedDistrict = String(districtLayer.properties.district);
 
-    //show current selection
+    //show current selection (!= selected district #figure/ground)
+    map.setFilter(queryLayer[0], ['!=', 'district', selectedDistrict]);
     map.setLayoutProperty(queryLayer[0], 'visibility', 'visible');
-    map.setFilter(queryLayer[0], ['!=', 'district', String(districtLayer.properties.district)]);
-    map.setLayoutProperty(queryLayer[1], 'visibility', 'visible');
+    //show current selection district label
+    map.setFilter(queryLayer[2], ['==', 'district', selectedDistrict]);
     map.setLayoutProperty(queryLayer[2], 'visibility', 'visible');
+    console.log(String(districtLayer.properties.district));
+
+    // map.setLayoutProperty(queryLayer[1], 'visibility', 'visible');
+    // map.setLayoutProperty(queryLayer[2], 'visibility', 'visible');
     
     //TOGGLE APPROPIATE SWITCH IF TURNING ON ALL LAYERS
     // TO FILTER LINES AROUND SHADOW USE THIS 
@@ -318,10 +327,21 @@ function removeLayers(c){
 		}
 		break;
 		case 'districts':
-		if (typeof districtLayer !== "undefined" ){ 		
+		if (typeof districtLayer !== "undefined" ){ 
+		    //remove opacity mask		
 			map.setFilter(queryLayer[0], ['!has', 'district']);
-            map.setFilter(queryLayer[1], ['!has', 'district']);	
-            map.setFilter(queryLayer[2], ['!has', 'district']);
+            // map.setFilter(queryLayer[1], ['!has', 'district']);
+
+            //remove label	
+            // map.setFilter(queryLayer[2], ['!has', 'district']);
+
+    //         map.setFilter(queryLayer[0], ['!=', 'district', String(districtLayer.properties.district)]);
+    // map.setLayoutProperty(queryLayer[0], 'visibility', 'visible');
+    // //show current selection district label
+    // map.setFilter(queryLayer[2], ['==', 'district', String(districtLayer.properties.district)]);
+    // map.setLayoutProperty(queryLayer[2], 'visibility', 'visible');
+
+
 		} 
 		break;
 		case 'minnesota':
