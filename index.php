@@ -149,7 +149,7 @@
 	    		        <i class="fa fa-info-circle"> </i>
 	    		        <i class="fa fa-exclamation-triangle"> </i>
 	    		        <i class="fa fa-refresh"> </i>
-	    		    </span> helpers surrounding the map.</li>
+	    		    </span> helpers placed around the map.</li>
 
 	    	</ul>
 	
