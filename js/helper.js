@@ -99,7 +99,7 @@ $( document ).ready(function() {
 	$('#triangle-topright').click(function(){
   		$(this).animate({right:'-100px'},250, function(){
     		$('#map_layers').animate({right:0},250);
-    		dataLayer.push({'event': 'openLayers'});
+    		// dataLayer.push({'event': 'openLayers'});
   		});  
 	});
 
@@ -120,7 +120,7 @@ $( document ).ready(function() {
 		$('.loader').show();
 		var elementName = $(this).attr('id');
         getOverlayLayers($(this), $(this).attr('id'));
-        dataLayer.push({'event': 'layerToggle_'+ elementName});
+        // dataLayer.push({'event': 'layerToggle_'+ elementName});
 
 	});
 
